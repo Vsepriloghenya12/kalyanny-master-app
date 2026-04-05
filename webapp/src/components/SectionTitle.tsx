@@ -8,7 +8,11 @@ type SectionTitleProps = {
 export function SectionTitle({ title, action }: SectionTitleProps) {
   return (
     <div className="section-title">
-      <h2>{title}</h2>
+      <div className="section-title__divider" aria-hidden="true">
+        <span className="section-title__line" />
+        <h2>{title}</h2>
+        <span className="section-title__line" />
+      </div>
       {action ? <div className="section-title__action">{action}</div> : null}
     </div>
   );
