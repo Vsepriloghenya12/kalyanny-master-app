@@ -4,6 +4,18 @@ import type { AppContent, Banner, Brand, Collection, Mix, NewsItem, Product } fr
 
 const TOKEN_KEY = 'kalyanny-master-owner-token';
 
+type OwnerTab = 'app' | 'banners' | 'mixes' | 'products' | 'brands' | 'news' | 'collections';
+
+const OWNER_TABS: Array<{ id: OwnerTab; label: string; description: string }> = [
+  { id: 'app', label: 'Основное', description: 'Название приложения и подзаголовок витрины.' },
+  { id: 'banners', label: 'Баннеры', description: 'Главные баннеры на первом экране.' },
+  { id: 'mixes', label: 'Миксы', description: 'Карточки миксов, теги и описания.' },
+  { id: 'products', label: 'Продукция', description: 'Каталог табаков и кальянов.' },
+  { id: 'brands', label: 'Бренды', description: 'Бренды, страны и особенности.' },
+  { id: 'news', label: 'Новости', description: 'Новости и ссылки внутри приложения.' },
+  { id: 'collections', label: 'Подборки', description: 'Тематические подборки и ID миксов.' }
+];
+
 function emptyBanner(): Banner {
   return { id: crypto.randomUUID(), title: 'Новый баннер', subtitle: 'Описание баннера', image: '/media/hero-banner-main.png', buttonLabel: 'Открыть', buttonTarget: '#catalog' };
 }
@@ -76,6 +88,7 @@ export function OwnerPage() {
   const [error, setError] = useState('');
   const [info, setInfo] = useState('');
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<OwnerTab>('app');
 
   useEffect(() => {
     fetchContent()
@@ -147,20 +160,54 @@ export function OwnerPage() {
     );
   }
 
+  const activeTabMeta = OWNER_TABS.find((tab) => tab.id === activeTab) ?? OWNER_TABS[0];
+  const tabCounts: Record<OwnerTab, string> = {
+    app: '2 поля',
+    banners: `${content.banners.length} элементов`,
+    mixes: `${content.mixes.length} элементов`,
+    products: `${content.products.length} элементов`,
+    brands: `${content.brands.length} элементов`,
+    news: `${content.news.length} элементов`,
+    collections: `${content.collections.length} элементов`
+  };
+
   return (
     <div className="owner-page">
-      <div className="owner-topbar">
-        <img src="/media/logo-kalyanny-master.png" alt="Кальянный мастер" className="owner-topbar__logo" />
-        <div className="owner-topbar__actions">
-          <button type="button" className="action-button action-button--ghost" onClick={logout}>Выйти</button>
-          <button type="button" className="action-button" onClick={handleSave}>Сохранить всё</button>
-        </div>
-      </div>
+      <div className="owner-shell">
+        <aside className="owner-sidebar">
+          <img src="/media/logo-kalyanny-master.png" alt="Кальянный мастер" className="owner-sidebar__logo" />
+          <div className="owner-sidebar__intro">
+            <p className="owner-sidebar__eyebrow">Owner Panel</p>
+            <h1>{content.app.title}</h1>
+            <p>Редактируй витрину, каталог и контент без длинного списка на одной странице.</p>
+          </div>
+          <div className="owner-tabs" role="tablist" aria-label="Разделы настроек">
+            {OWNER_TABS.map((tab) => (
+              <button key={tab.id} type="button" className={tab.id === activeTab ? 'owner-tab is-active' : 'owner-tab'} onClick={() => setActiveTab(tab.id)}>
+                <span className="owner-tab__label">{tab.label}</span>
+                <span className="owner-tab__meta">{tabCounts[tab.id]}</span>
+              </button>
+            ))}
+          </div>
+        </aside>
 
-      {info ? <p className="owner-message owner-message--ok">{info}</p> : null}
-      {error ? <p className="owner-message owner-message--error">{error}</p> : null}
+        <main className="owner-main">
+          <div className="owner-topbar">
+            <div className="owner-topbar__title">
+              <p className="owner-topbar__eyebrow">Настройки</p>
+              <h2>{activeTabMeta.label}</h2>
+              <p>{activeTabMeta.description}</p>
+            </div>
+            <div className="owner-topbar__actions">
+              <button type="button" className="action-button action-button--ghost" onClick={logout}>Выйти</button>
+              <button type="button" className="action-button" onClick={handleSave}>Сохранить всё</button>
+            </div>
+          </div>
 
-      <section className="owner-section">
+          {info ? <p className="owner-message owner-message--ok">{info}</p> : null}
+          {error ? <p className="owner-message owner-message--error">{error}</p> : null}
+
+      <section className="owner-section" hidden={activeTab !== 'app'}>
         <h2>Основные тексты</h2>
         <div className="owner-grid owner-grid--two">
           <label>
@@ -174,7 +221,7 @@ export function OwnerPage() {
         </div>
       </section>
 
-      <section className="owner-section">
+      <section className="owner-section" hidden={activeTab !== 'banners'}>
         <div className="owner-section__header">
           <h2>Баннеры</h2>
           <button type="button" className="action-button action-button--small" onClick={() => setContent({ ...content, banners: [...content.banners, emptyBanner()] })}>+ Баннер</button>
@@ -196,7 +243,7 @@ export function OwnerPage() {
         ))}
       </section>
 
-      <section className="owner-section">
+      <section className="owner-section" hidden={activeTab !== 'mixes'}>
         <div className="owner-section__header">
           <h2>Популярные миксы</h2>
           <button type="button" className="action-button action-button--small" onClick={() => setContent({ ...content, mixes: [...content.mixes, emptyMix()] })}>+ Микс</button>
@@ -221,7 +268,7 @@ export function OwnerPage() {
         ))}
       </section>
 
-      <section className="owner-section">
+      <section className="owner-section" hidden={activeTab !== 'products'}>
         <div className="owner-section__header">
           <h2>Продукция</h2>
           <button type="button" className="action-button action-button--small" onClick={() => setContent({ ...content, products: [...content.products, emptyProduct()] })}>+ Продукт</button>
@@ -246,7 +293,7 @@ export function OwnerPage() {
         ))}
       </section>
 
-      <section className="owner-section">
+      <section className="owner-section" hidden={activeTab !== 'brands'}>
         <div className="owner-section__header">
           <h2>Бренды</h2>
           <button type="button" className="action-button action-button--small" onClick={() => setContent({ ...content, brands: [...content.brands, emptyBrand()] })}>+ Бренд</button>
@@ -268,7 +315,7 @@ export function OwnerPage() {
         ))}
       </section>
 
-      <section className="owner-section">
+      <section className="owner-section" hidden={activeTab !== 'news'}>
         <div className="owner-section__header">
           <h2>Новости</h2>
           <button type="button" className="action-button action-button--small" onClick={() => setContent({ ...content, news: [...content.news, emptyNews()] })}>+ Новость</button>
@@ -291,7 +338,7 @@ export function OwnerPage() {
         ))}
       </section>
 
-      <section className="owner-section">
+      <section className="owner-section" hidden={activeTab !== 'collections'}>
         <div className="owner-section__header">
           <h2>Подборки</h2>
           <button type="button" className="action-button action-button--small" onClick={() => setContent({ ...content, collections: [...content.collections, emptyCollection()] })}>+ Подборка</button>
@@ -311,6 +358,8 @@ export function OwnerPage() {
           </div>
         ))}
       </section>
+        </main>
+      </div>
     </div>
   );
 }
