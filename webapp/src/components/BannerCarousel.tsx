@@ -55,19 +55,23 @@ export function BannerCarousel({ banners, onAction }: BannerCarouselProps) {
     setIndex((current) => (current - 1 + banners.length) % banners.length);
   };
 
-  const currentBanner = banners[index] ?? banners[0];
-
   return (
-    <section className="banner-carousel" aria-label="Баннеры" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-      <div className="banner-carousel__track" style={{ backgroundImage: `linear-gradient(90deg, rgba(4,4,4,.82), rgba(4,4,4,.12)), url(${currentBanner.image})` }}>
-        <div className="banner-carousel__content">
-          <p className="banner-carousel__eyebrow">Подборки и новые вкусы</p>
-          <h1>{currentBanner.title}</h1>
-          <p>{currentBanner.subtitle}</p>
-          <button type="button" className="action-button" onClick={() => onAction(currentBanner.buttonTarget)}>
-            {currentBanner.buttonLabel}
-          </button>
-        </div>
+    <section className="banner-carousel" aria-label="Баннеры">
+      <div className="banner-carousel__stage" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+        {banners.map((banner, bannerIndex) => (
+          <article key={banner.id} className={bannerIndex === index ? 'banner-carousel__slide is-active' : 'banner-carousel__slide'} aria-hidden={bannerIndex !== index}>
+            <div className="banner-carousel__track" style={{ backgroundImage: `linear-gradient(90deg, rgba(4,4,4,.82), rgba(4,4,4,.12)), url(${banner.image})` }}>
+              <div className="banner-carousel__content">
+                <p className="banner-carousel__eyebrow">Подборки и новые вкусы</p>
+                <h1>{banner.title}</h1>
+                <p className="banner-carousel__subtitle">{banner.subtitle}</p>
+                <button type="button" className="action-button" onClick={() => onAction(banner.buttonTarget)}>
+                  {banner.buttonLabel}
+                </button>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
 
       <div className="banner-carousel__thumbs" role="tablist" aria-label="Переключение баннеров">

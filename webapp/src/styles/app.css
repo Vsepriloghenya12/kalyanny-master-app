@@ -38,18 +38,40 @@
   touch-action: pan-y;
 }
 
-.banner-carousel__track {
-  min-height: 284px;
-  padding: 22px 18px;
+.banner-carousel__stage {
+  position: relative;
+  height: clamp(292px, 74vw, 328px);
+  overflow: hidden;
   border-radius: 30px;
+}
+
+.banner-carousel__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: translateX(14px) scale(0.985);
+  transition: opacity 0.42s ease, transform 0.42s ease;
+  pointer-events: none;
+}
+
+.banner-carousel__slide.is-active {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+}
+
+.banner-carousel__track {
+  height: 100%;
+  padding: 22px 18px;
+  border-radius: inherit;
   background-size: cover;
   background-position: center;
   box-shadow: var(--shadow);
 }
 
 .banner-carousel__content {
-  min-height: 240px;
-  max-width: 62%;
+  height: 100%;
+  max-width: min(62%, 240px);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -69,6 +91,10 @@
   font-size: 34px;
   line-height: 0.96;
   text-transform: uppercase;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .banner-carousel__content p {
@@ -77,8 +103,42 @@
   line-height: 1.25;
 }
 
+.banner-carousel__subtitle {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
 .banner-carousel__content .action-button {
   margin-top: auto;
+}
+
+.banner-carousel__slide .banner-carousel__content > * {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.32s ease, transform 0.42s ease;
+}
+
+.banner-carousel__slide.is-active .banner-carousel__content > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.banner-carousel__slide.is-active .banner-carousel__eyebrow {
+  transition-delay: 0.04s;
+}
+
+.banner-carousel__slide.is-active .banner-carousel__content h1 {
+  transition-delay: 0.09s;
+}
+
+.banner-carousel__slide.is-active .banner-carousel__subtitle {
+  transition-delay: 0.14s;
+}
+
+.banner-carousel__slide.is-active .action-button {
+  transition-delay: 0.19s;
 }
 
 .banner-carousel__thumbs {
@@ -490,12 +550,12 @@
     font-size: 29px;
   }
 
-  .banner-carousel__track {
-    min-height: 300px;
+  .banner-carousel__stage {
+    height: 304px;
   }
 
   .banner-carousel__content {
-    min-height: 256px;
+    max-width: 72%;
   }
 
   .mix-grid {
