@@ -1,18 +1,24 @@
 FROM node:20-bookworm-slim AS deps
 WORKDIR /app
 
+ENV NODE_ENV=development
+ENV NPM_CONFIG_PRODUCTION=false
+ENV npm_config_production=false
+
 COPY package.json package-lock.json ./
 COPY webapp/package.json ./webapp/package.json
 COPY server/package.json ./server/package.json
 
-RUN npm ci --include=dev
+RUN npm ci --include=dev --workspaces --include-workspace-root
 
 FROM deps AS build
 WORKDIR /app
 
 COPY . .
 
-RUN npm run build
+RUN npm exec --workspace webapp -- tsc --noEmit
+RUN npm exec --workspace webapp -- vite build
+RUN npm run build --workspace server
 
 FROM node:20-bookworm-slim AS runtime
 WORKDIR /app
