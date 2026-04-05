@@ -35,28 +35,11 @@
 .banner-carousel {
   display: grid;
   gap: 12px;
-}
-
-.banner-carousel__viewport {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.banner-carousel__viewport::-webkit-scrollbar {
-  display: none;
-}
-
-.banner-carousel__slide {
-  flex: 0 0 100%;
-  min-width: 0;
-  scroll-snap-align: start;
+  touch-action: pan-y;
 }
 
 .banner-carousel__track {
-  height: clamp(236px, 58vw, 268px);
+  min-height: 284px;
   padding: 22px 18px;
   border-radius: 30px;
   background-size: cover;
@@ -65,10 +48,12 @@
 }
 
 .banner-carousel__content {
+  min-height: 240px;
   max-width: 62%;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
-  align-content: start;
+  align-items: flex-start;
 }
 
 .banner-carousel__eyebrow {
@@ -90,6 +75,10 @@
   margin: 0;
   color: rgba(255, 255, 255, 0.88);
   line-height: 1.25;
+}
+
+.banner-carousel__content .action-button {
+  margin-top: auto;
 }
 
 .banner-carousel__thumbs {
@@ -502,7 +491,11 @@
   }
 
   .banner-carousel__track {
-    height: 248px;
+    min-height: 300px;
+  }
+
+  .banner-carousel__content {
+    min-height: 256px;
   }
 
   .mix-grid {
