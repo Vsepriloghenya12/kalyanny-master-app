@@ -37,8 +37,26 @@
   gap: 12px;
 }
 
+.banner-carousel__viewport {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.banner-carousel__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.banner-carousel__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
 .banner-carousel__track {
-  min-height: 236px;
+  height: clamp(236px, 58vw, 268px);
   padding: 22px 18px;
   border-radius: 30px;
   background-size: cover;
@@ -481,6 +499,10 @@
 
   .banner-carousel__content h1 {
     font-size: 29px;
+  }
+
+  .banner-carousel__track {
+    height: 248px;
   }
 
   .mix-grid {
