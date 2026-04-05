@@ -5,7 +5,7 @@ COPY package.json package-lock.json ./
 COPY webapp/package.json ./webapp/package.json
 COPY server/package.json ./server/package.json
 
-RUN npm ci
+RUN npm ci --include=dev
 
 FROM deps AS build
 WORKDIR /app
