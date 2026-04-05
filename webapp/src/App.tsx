@@ -19,6 +19,7 @@ function MainApp() {
   const [tab, setTab] = useState<MainTab>('home');
   const [catalogFilter, setCatalogFilter] = useState<CatalogFilter>('tobacco');
   const [activeMix, setActiveMix] = useState<Mix | null>(null);
+  const [mixerView, setMixerView] = useState<'all' | 'popular'>('all');
   const favorites = useFavorites();
 
   useEffect(() => {
@@ -28,28 +29,43 @@ function MainApp() {
   const handleBannerAction = (target: string) => {
     if (target === 'tab:mixer') {
       setTab('mixer');
+      setMixerView('all');
       return;
     }
     if (target === 'tab:picks') {
       setTab('picks');
+      setMixerView('all');
       return;
     }
     if (target === 'tab:brands') {
       setTab('catalog');
       setCatalogFilter('brands');
+      setMixerView('all');
       return;
     }
     if (target === 'tab:tobacco') {
       setTab('catalog');
       setCatalogFilter('tobacco');
+      setMixerView('all');
       return;
     }
     if (target === 'tab:hookah') {
       setTab('catalog');
       setCatalogFilter('hookah');
+      setMixerView('all');
       return;
     }
     window.open(target, '_self');
+  };
+
+  const handleMainTabChange = (nextTab: MainTab) => {
+    setTab(nextTab);
+    setMixerView('all');
+  };
+
+  const handleOpenPopularMixes = () => {
+    setTab('mixer');
+    setMixerView('popular');
   };
 
   const page = useMemo(() => {
@@ -64,7 +80,8 @@ function MainApp() {
           favoriteMixes={favorites.state.mixes}
           onToggleFavoriteMix={favorites.toggleMix}
           onOpenMix={setActiveMix}
-          setMainTab={setTab}
+          setMainTab={handleMainTabChange}
+          onOpenPopularMixes={handleOpenPopularMixes}
           onCatalogFilterChange={setCatalogFilter}
           onBannerAction={handleBannerAction}
         />
@@ -110,15 +127,16 @@ function MainApp() {
         favoriteMixes={favorites.state.mixes}
         onToggleFavoriteMix={favorites.toggleMix}
         onOpenMix={setActiveMix}
+        showPopularOnly={mixerView === 'popular'}
       />
     );
-  }, [catalogFilter, content, favorites.state.brands, favorites.state.mixes, favorites.state.products, favorites.toggleBrand, favorites.toggleMix, favorites.toggleProduct, tab]);
+  }, [catalogFilter, content, favorites.state.brands, favorites.state.mixes, favorites.state.products, favorites.toggleBrand, favorites.toggleMix, favorites.toggleProduct, mixerView, tab]);
 
   return (
     <MobileShell>
       <TopLogo />
       <main className="app-content">{page}</main>
-      <BottomNav currentTab={tab} onChange={setTab} />
+      <BottomNav currentTab={tab} onChange={handleMainTabChange} />
       <MixModal mix={activeMix} onClose={() => setActiveMix(null)} />
     </MobileShell>
   );

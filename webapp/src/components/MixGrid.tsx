@@ -5,15 +5,16 @@ type MixGridProps = {
   favorites: string[];
   onOpen: (mix: Mix) => void;
   onToggleFavorite: (id: string) => void;
+  layout?: 'grid' | 'rail';
 };
 
-export function MixGrid({ mixes, favorites, onOpen, onToggleFavorite }: MixGridProps) {
+export function MixGrid({ mixes, favorites, onOpen, onToggleFavorite, layout = 'grid' }: MixGridProps) {
   return (
-    <div className="mix-grid">
+    <div className={layout === 'rail' ? 'mix-grid mix-grid--rail' : 'mix-grid'}>
       {mixes.map((mix) => {
         const isFavorite = favorites.includes(mix.id);
         return (
-          <article key={mix.id} className="mix-card" style={{ backgroundImage: `linear-gradient(180deg, rgba(10,10,10,.12), rgba(10,10,10,.9)), url(${mix.image})` }}>
+          <article key={mix.id} className={layout === 'rail' ? 'mix-card mix-card--rail' : 'mix-card'} style={{ backgroundImage: `linear-gradient(180deg, rgba(10,10,10,.12), rgba(10,10,10,.9)), url(${mix.image})` }}>
             <button type="button" className={isFavorite ? 'mix-card__heart is-active' : 'mix-card__heart'} onClick={() => onToggleFavorite(mix.id)} aria-label="Добавить в избранное">
               ♥
             </button>
