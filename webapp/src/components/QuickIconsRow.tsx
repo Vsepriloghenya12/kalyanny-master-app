@@ -21,7 +21,6 @@ export function QuickIconsRow({ onOpenMixes, onOpenTobaccos, onOpenHookahs, onOp
       {buttons.map((button) => (
         <button key={button.id} type="button" className="quick-icons__button" onClick={button.action} aria-label={button.label}>
           <img src={button.image} alt={button.label} />
-          <span>{button.label}</span>
         </button>
       ))}
     </section>

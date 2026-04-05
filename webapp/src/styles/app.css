@@ -61,7 +61,7 @@
 .banner-card__media {
   position: relative;
   overflow: hidden;
-  min-height: 152px;
+  height: 152px;
   padding: 16px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--line-strong);
@@ -135,6 +135,7 @@
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  min-height: 34px;
 }
 
 .banner-card__content .action-button {
@@ -195,8 +196,8 @@
   position: relative;
   display: grid;
   justify-items: center;
-  gap: 10px;
-  padding: 14px 8px 12px;
+  align-items: center;
+  padding: 10px 8px;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   background: linear-gradient(180deg, rgba(24, 24, 27, 0.96), rgba(14, 14, 16, 0.96));
@@ -225,14 +226,6 @@
   width: 78px;
   height: 78px;
   object-fit: contain;
-}
-
-.quick-icons__button span {
-  font-family: var(--font-subtitle);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  color: rgba(255, 255, 255, 0.78);
 }
 
 .content-section {
@@ -651,7 +644,7 @@
 
 @media (max-width: 380px) {
   .banner-card__media {
-    min-height: 138px;
+    height: 138px;
     padding: 12px;
   }
 
