@@ -38,13 +38,22 @@
 }
 
 .banner-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
   gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+.banner-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .banner-card {
   min-width: 0;
+  flex: 0 0 188px;
+  scroll-snap-align: start;
 }
 
 .banner-card__media {
