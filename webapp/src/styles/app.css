@@ -126,36 +126,21 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
-  align-items: stretch;
+  align-items: start;
 }
 
 .quick-icons__button {
-  min-height: 94px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: transparent;
   border: 0;
   padding: 0;
-  border-radius: 24px;
   cursor: pointer;
   transform: translateY(0);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
-    rgba(15, 15, 15, 0.9);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 
 .quick-icons__button:hover {
   transform: translateY(-3px);
   filter: drop-shadow(0 8px 18px rgba(209, 25, 25, 0.15));
-}
-
-.quick-icons__button img {
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
 }
 
 .content-section {
