@@ -1,14 +1,23 @@
 :root {
   --bg: #080808;
+  --bg-deep: #050608;
   --panel: #111111;
+  --panel-2: #17181b;
   --text: #f2f2f2;
+  --text-soft: rgba(255, 255, 255, 0.86);
   --muted: #bfbfbf;
+  --muted-2: rgba(255, 255, 255, 0.62);
   --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.14);
   --accent: #d81919;
   --accent-2: #8d0505;
   --gold: #e7bc65;
   --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.4);
+  --shadow-accent: 0 14px 30px rgba(192, 15, 15, 0.34);
   --radius: 26px;
+  --radius-sm: 20px;
+  --radius-lg: 28px;
   --font-body: "Aptos", "Segoe UI", "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-display: "Segoe UI Variable Display", "Aptos Display", "Segoe UI", "Inter", system-ui, sans-serif;
   --font-subtitle: "Aptos", "Segoe UI Variable Text", "Segoe UI", "Inter", system-ui, sans-serif;
