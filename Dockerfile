@@ -16,10 +16,7 @@ WORKDIR /app
 
 COPY . .
 
-WORKDIR /app/webapp
-RUN ../node_modules/.bin/tsc --noEmit
-RUN ../node_modules/.bin/vite build
-WORKDIR /app
+RUN npm run build --workspace webapp
 RUN npm run build --workspace server
 
 FROM node:20-bookworm-slim AS runtime
