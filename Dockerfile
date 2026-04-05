@@ -1,23 +1,15 @@
-FROM node:20-bookworm-slim AS deps
+FROM node:20-bookworm-slim AS build
 WORKDIR /app
 
 ENV NODE_ENV=development
 ENV NPM_CONFIG_PRODUCTION=false
 ENV npm_config_production=false
 
-COPY package.json package-lock.json ./
 COPY webapp/package.json ./webapp/package.json
-COPY server/package.json ./server/package.json
+COPY webapp ./webapp
 
-RUN npm ci --include=dev --workspaces --include-workspace-root
-
-FROM deps AS build
-WORKDIR /app
-
-COPY . .
-
-RUN npm run build --workspace webapp
-RUN npm run build --workspace server
+RUN npm install --prefix ./webapp --include=dev
+RUN npm run build --prefix ./webapp
 
 FROM node:20-bookworm-slim AS runtime
 WORKDIR /app
@@ -25,15 +17,13 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=8080
 
-COPY package.json package-lock.json ./
-COPY webapp/package.json ./webapp/package.json
 COPY server/package.json ./server/package.json
 
-RUN npm ci --omit=dev
+RUN npm install --prefix ./server --omit=dev
 
-COPY --from=build /app/server ./server
+COPY server ./server
 COPY --from=build /app/webapp/dist ./webapp/dist
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD ["node", "server/index.js"]
