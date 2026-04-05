@@ -1,0 +1,197 @@
+{
+  "app": {
+    "title": "Кальянный мастер",
+    "subtitle": "Миксы, бренды, новинки и каталог табаков"
+  },
+  "banners": [
+    {
+      "id": "banner-1",
+      "title": "Создай свой микс",
+      "subtitle": "Подбери идеальное сочетание вкусов и найди готовые рецепты для чаши.",
+      "image": "/media/hero-banner-main.png",
+      "buttonLabel": "Открыть миксер",
+      "buttonTarget": "tab:mixer"
+    },
+    {
+      "id": "banner-2",
+      "title": "Новые вкусы сезона",
+      "subtitle": "Свежие лимитки, тропические линии и ягодные сочетания уже в каталоге.",
+      "image": "/media/mix-tropic.png",
+      "buttonLabel": "Смотреть новинки",
+      "buttonTarget": "tab:tobacco"
+    },
+    {
+      "id": "banner-3",
+      "title": "Бренды и линейки",
+      "subtitle": "Собрали главные бренды, сильные стороны и ключевые продукты в одном месте.",
+      "image": "/media/mix-berry.png",
+      "buttonLabel": "Открыть бренды",
+      "buttonTarget": "tab:brands"
+    }
+  ],
+  "mixes": [
+    {
+      "id": "mix-tropic-breeze",
+      "title": "Тропический бриз",
+      "subtitle": "Ананас · Манго · Киви",
+      "image": "/media/mix-tropic.png",
+      "description": "Сочный и яркий микс с мягкой сладостью и свежим фруктовым финишем.",
+      "details": "Хорошо раскрывается на средней жаре. Подходит для вечерних сессий и для тех, кто любит ароматные фруктовые чаши без приторности.",
+      "ingredients": ["Ананас", "Манго", "Киви"],
+      "notes": ["тропики", "сладкий", "цитрус"],
+      "isPopular": true
+    },
+    {
+      "id": "mix-berry-chill",
+      "title": "Ягодный чил",
+      "subtitle": "Черника · Малина · Мята",
+      "image": "/media/mix-berry.png",
+      "description": "Плотный ягодный профиль с легким холодком и освежающей мятной нотой.",
+      "details": "Отличный вариант для летнего меню. Мята здесь не доминирует, а только подчеркивает ягоды и добавляет прохладу.",
+      "ingredients": ["Черника", "Малина", "Мята"],
+      "notes": ["ягоды", "холодок", "сладкий"],
+      "isPopular": true
+    },
+    {
+      "id": "mix-citrus-spice",
+      "title": "Цитрус и специи",
+      "subtitle": "Апельсин · Лайм · Корица",
+      "image": "/media/mix-tropic.png",
+      "description": "Контрастный микс для тех, кто любит сочность с легкой пряной глубиной.",
+      "details": "Лучше всего работает в плотной чаше с умеренным прогревом. Лайм отвечает за яркость, корица — за теплое послевкусие.",
+      "ingredients": ["Апельсин", "Лайм", "Корица"],
+      "notes": ["цитрус", "пряности"],
+      "isPopular": true
+    },
+    {
+      "id": "mix-dessert-cloud",
+      "title": "Десертное облако",
+      "subtitle": "Ваниль · Кокос · Сливки",
+      "image": "/media/mix-berry.png",
+      "description": "Мягкий десертный профиль с кремовой базой и сладким ароматом.",
+      "details": "Нравится тем, кто ищет спокойные и плотные десертные чаши. Хорошо сочетается с легким холодком.",
+      "ingredients": ["Ваниль", "Кокос", "Сливки"],
+      "notes": ["десерт", "сладкий"],
+      "isPopular": false
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-darkside-supernova",
+      "title": "Darkside Supernova",
+      "brand": "Darkside",
+      "type": "tobacco",
+      "line": "Core",
+      "strength": "Крепкая",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Холодная база для миксов, подходит для усиления яркости и свежести.",
+      "isNew": true
+    },
+    {
+      "id": "prod-blackburn-peach",
+      "title": "Black Burn Peach Yogurt",
+      "brand": "Black Burn",
+      "type": "tobacco",
+      "line": "Original",
+      "strength": "Средне-крепкая",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Персиково-йогуртовый профиль с мягкой сладостью и кремовым телом.",
+      "isNew": false
+    },
+    {
+      "id": "prod-satyr-oak",
+      "title": "Satyr Oak Line",
+      "brand": "Satyr",
+      "type": "tobacco",
+      "line": "Oak Cured",
+      "strength": "Крепкая",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Глубокий благородный профиль для спокойных соло-чаш и сложных миксов.",
+      "isNew": false
+    },
+    {
+      "id": "prod-mattpear-simplem",
+      "title": "MattPear Simple M",
+      "brand": "MattPear",
+      "type": "hookah",
+      "line": "Simple",
+      "strength": "Легкая тяга",
+      "image": "/media/icon-hookahs.png",
+      "description": "Лаконичный кальян для дома с стабильной тягой и приятной эргономикой.",
+      "isNew": true
+    },
+    {
+      "id": "prod-hoob-go",
+      "title": "Hoob Go On",
+      "brand": "Hoob",
+      "type": "hookah",
+      "line": "Go On",
+      "strength": "Средняя тяга",
+      "image": "/media/icon-hookahs.png",
+      "description": "Современный кальян с модульной конструкцией и чистым дизайном.",
+      "isNew": false
+    }
+  ],
+  "brands": [
+    {
+      "id": "brand-darkside",
+      "title": "Darkside",
+      "country": "Россия",
+      "image": "/media/icon-brands.png",
+      "description": "Сильный узнаваемый бренд с насыщенными вкусами и мощной базой для миксов.",
+      "highlight": "Яркая крепкая база"
+    },
+    {
+      "id": "brand-blackburn",
+      "title": "Black Burn",
+      "country": "Россия",
+      "image": "/media/icon-brands.png",
+      "description": "Популярные фруктовые и десертные профили, удобные для широкой аудитории.",
+      "highlight": "Фрукты и десерты"
+    },
+    {
+      "id": "brand-satyr",
+      "title": "Satyr",
+      "country": "Россия",
+      "image": "/media/icon-brands.png",
+      "description": "Премиальный характер, древесные и сигарные оттенки, много взрослой глубины.",
+      "highlight": "Плотные сложные вкусы"
+    }
+  ],
+  "news": [
+    {
+      "id": "news-1",
+      "title": "Летняя полка новинок уже в каталоге",
+      "image": "/media/hero-banner-main.png",
+      "description": "Добавлены свежие фрукты, холодные профили и несколько новых десертных вкусов.",
+      "date": "05.04.2026",
+      "linkLabel": "К новинкам",
+      "linkTarget": "tab:tobacco"
+    },
+    {
+      "id": "news-2",
+      "title": "Три готовые чаши под вечерние посиделки",
+      "image": "/media/mix-berry.png",
+      "description": "Ягодный, цитрусовый и десертный сценарий — чтобы быстро выбрать настроение вечера.",
+      "date": "03.04.2026",
+      "linkLabel": "Смотреть подборки",
+      "linkTarget": "tab:picks"
+    }
+  ],
+  "collections": [
+    {
+      "id": "collection-1",
+      "title": "Летние фрукты",
+      "image": "/media/mix-tropic.png",
+      "description": "Подборка для ярких фруктовых чаш с легкой сладостью и свежим финишем.",
+      "mixIds": ["mix-tropic-breeze", "mix-citrus-spice"]
+    },
+    {
+      "id": "collection-2",
+      "title": "Вечерний chill",
+      "image": "/media/mix-berry.png",
+      "description": "Спокойные ягодные и десертные сочетания для размеренных сессий.",
+      "mixIds": ["mix-berry-chill", "mix-dessert-cloud"]
+    }
+  ]
+}

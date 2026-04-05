@@ -1,0 +1,134 @@
+.owner-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.owner-page--login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.owner-login {
+  width: min(460px, 100%);
+  padding: 30px 24px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.owner-login__logo,
+.owner-topbar__logo {
+  width: min(340px, 100%);
+}
+
+.owner-topbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.owner-topbar__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.owner-section {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.owner-section__header,
+.owner-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.owner-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.owner-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.owner-grid__wide {
+  grid-column: 1 / -1;
+}
+
+.owner-card {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.owner-form,
+.owner-grid label {
+  display: grid;
+  gap: 8px;
+}
+
+.owner-grid input,
+.owner-grid textarea,
+.owner-grid select,
+.owner-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+
+.owner-grid textarea {
+  min-height: 104px;
+  resize: vertical;
+}
+
+.owner-message {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+}
+
+.owner-message--ok {
+  background: rgba(44, 164, 92, 0.18);
+  color: #b7f2c3;
+}
+
+.owner-message--error {
+  background: rgba(216, 25, 25, 0.18);
+  color: #ffc4c4;
+}
+
+.owner-hint {
+  color: rgba(255, 255, 255, 0.64);
+}
+
+.danger-link {
+  border: 0;
+  background: transparent;
+  color: #ff8383;
+}
+
+@media (max-width: 760px) {
+  .owner-grid--two {
+    grid-template-columns: 1fr;
+  }
+}
