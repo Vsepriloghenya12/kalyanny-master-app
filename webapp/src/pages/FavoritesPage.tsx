@@ -33,20 +33,20 @@ export function FavoritesPage({ content, favoriteMixes, favoriteProducts, favori
       {products.length ? (
         <>
           <SectionTitle title="Продукция" />
-          <div className="catalog-product-grid">
+          <div className="list-stack">
             {products.map((product) => (
-              <article key={product.id} className="catalog-product-card">
-                <button type="button" className="catalog-product-card__favorite is-active" onClick={() => onToggleProduct(product.id)} aria-label="Убрать из избранного">
-                  ♥
-                </button>
-                <div className="catalog-product-card__media" style={{ backgroundImage: `linear-gradient(180deg, rgba(9, 13, 24, 0.08), rgba(9, 13, 24, 0.92)), url(${product.image})` }} />
-                <div className="catalog-product-card__body">
-                  <span className="catalog-product-card__eyebrow">{product.brand}</span>
-                  <h3>{product.title}</h3>
-                  <p>{product.description}</p>
-                  <span className="catalog-product-card__meta">{`${product.line} · ${product.strength}`}</span>
-                </div>
-              </article>
+              <ListRow
+                key={product.id}
+                image={product.image}
+                title={product.title}
+                subtitle={product.description}
+                meta={`${product.brand} · ${product.line}`}
+                action={
+                  <button type="button" className="mini-favorite is-active" onClick={() => onToggleProduct(product.id)}>
+                    ♥
+                  </button>
+                }
+              />
             ))}
           </div>
         </>

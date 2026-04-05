@@ -10,21 +10,11 @@ type HomePageProps = {
   onToggleFavoriteMix: (id: string) => void;
   onOpenMix: (mix: Mix) => void;
   setMainTab: (tab: MainTab) => void;
-  onOpenPopularMixes: () => void;
   onCatalogFilterChange: (filter: 'tobacco' | 'hookah' | 'brands') => void;
   onBannerAction: (target: string) => void;
 };
 
-export function HomePage({
-  content,
-  favoriteMixes,
-  onToggleFavoriteMix,
-  onOpenMix,
-  setMainTab,
-  onOpenPopularMixes,
-  onCatalogFilterChange,
-  onBannerAction
-}: HomePageProps) {
+export function HomePage({ content, favoriteMixes, onToggleFavoriteMix, onOpenMix, setMainTab, onCatalogFilterChange, onBannerAction }: HomePageProps) {
   const popularMixes = content.mixes.filter((mix) => mix.isPopular);
 
   return (
@@ -35,23 +25,11 @@ export function HomePage({
         onOpenTobaccos={() => onCatalogFilterChange('tobacco')}
         onOpenHookahs={() => onCatalogFilterChange('hookah')}
         onOpenBrands={() => onCatalogFilterChange('brands')}
-        onOpenMixes={() => setMainTab('mixer')}
+        onOpenMixes={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       />
       <section className="content-section">
-        <SectionTitle
-          title="Популярные миксы от кальянных мастеров"
-          action={
-            <button type="button" className="section-link-button" onClick={onOpenPopularMixes}>
-              Смотреть все
-            </button>
-          }
-        />
-        <MixGrid mixes={popularMixes} favorites={favoriteMixes} onOpen={onOpenMix} onToggleFavorite={onToggleFavoriteMix} layout="rail" />
-      </section>
-
-      <section className="content-section">
-        <SectionTitle title="Вкусы" />
-        <MixGrid mixes={content.mixes} favorites={favoriteMixes} onOpen={onOpenMix} onToggleFavorite={onToggleFavoriteMix} />
+        <SectionTitle title="Популярные миксы" />
+        <MixGrid mixes={popularMixes} favorites={favoriteMixes} onOpen={onOpenMix} onToggleFavorite={onToggleFavoriteMix} />
       </section>
     </>
   );
