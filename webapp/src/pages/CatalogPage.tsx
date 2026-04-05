@@ -9,13 +9,14 @@ type CatalogPageProps = {
   content: AppContent;
   filter: CatalogFilter;
   onFilterChange: (value: CatalogFilter) => void;
+  onAction: (target: string) => void;
   favoriteProducts: string[];
   favoriteBrands: string[];
   onToggleProduct: (id: string) => void;
   onToggleBrand: (id: string) => void;
 };
 
-export function CatalogPage({ content, filter, onFilterChange, favoriteProducts, favoriteBrands, onToggleProduct, onToggleBrand }: CatalogPageProps) {
+export function CatalogPage({ content, filter, onFilterChange, onAction, favoriteProducts, favoriteBrands, onToggleProduct, onToggleBrand }: CatalogPageProps) {
   return (
     <section className="content-section">
       <SectionTitle title="Каталог" />
@@ -62,9 +63,9 @@ export function CatalogPage({ content, filter, onFilterChange, favoriteProducts,
               subtitle={item.description}
               meta={item.date}
               action={
-                <a className="inline-link" href={item.linkTarget}>
+                <button type="button" className="inline-link" onClick={() => onAction(item.linkTarget)}>
                   {item.linkLabel}
-                </a>
+                </button>
               }
             />
           ))}
@@ -72,24 +73,24 @@ export function CatalogPage({ content, filter, onFilterChange, favoriteProducts,
       ) : null}
 
       {filter === 'tobacco' || filter === 'hookah' ? (
-        <div className="list-stack">
+        <div className="catalog-product-grid">
           {content.products
             .filter((product) => (filter === 'tobacco' ? product.type === 'tobacco' : product.type === 'hookah'))
             .map((product) => {
               const isFavorite = favoriteProducts.includes(product.id);
               return (
-                <ListRow
-                  key={product.id}
-                  image={product.image}
-                  title={product.title}
-                  subtitle={product.description}
-                  meta={`${product.brand} · ${product.line} · ${product.strength}`}
-                  action={
-                    <button type="button" className={isFavorite ? 'mini-favorite is-active' : 'mini-favorite'} onClick={() => onToggleProduct(product.id)}>
-                      ♥
-                    </button>
-                  }
-                />
+                <article key={product.id} className="catalog-product-card">
+                  <button type="button" className={isFavorite ? 'catalog-product-card__favorite is-active' : 'catalog-product-card__favorite'} onClick={() => onToggleProduct(product.id)} aria-label="Добавить в избранное">
+                    ♥
+                  </button>
+                  <div className="catalog-product-card__media" style={{ backgroundImage: `linear-gradient(180deg, rgba(9, 13, 24, 0.08), rgba(9, 13, 24, 0.92)), url(${product.image})` }} />
+                  <div className="catalog-product-card__body">
+                    <span className="catalog-product-card__eyebrow">{product.brand}</span>
+                    <h3>{product.title}</h3>
+                    <p>{product.description}</p>
+                    <span className="catalog-product-card__meta">{`${product.line} · ${product.strength}`}</span>
+                  </div>
+                </article>
               );
             })}
         </div>

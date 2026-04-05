@@ -18,7 +18,8 @@ export function BottomNav({ currentTab, onChange }: BottomNavProps) {
     <nav className="bottom-nav" aria-label="Нижнее меню">
       {items.map((item) => (
         <button key={item.tab} type="button" className={item.tab === currentTab ? 'bottom-nav__item is-active' : 'bottom-nav__item'} onClick={() => onChange(item.tab)} aria-label={item.label}>
-          <img src={item.image} alt={item.label} />
+          <img src={item.image} alt="" aria-hidden="true" />
+          <span>{item.label}</span>
         </button>
       ))}
     </nav>

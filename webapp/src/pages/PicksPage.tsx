@@ -4,9 +4,10 @@ import type { AppContent } from '../types';
 
 type PicksPageProps = {
   content: AppContent;
+  onAction: (target: string) => void;
 };
 
-export function PicksPage({ content }: PicksPageProps) {
+export function PicksPage({ content, onAction }: PicksPageProps) {
   const mixById = new Map(content.mixes.map((mix) => [mix.id, mix]));
 
   return (
@@ -39,9 +40,9 @@ export function PicksPage({ content }: PicksPageProps) {
             subtitle={item.description}
             meta={item.date}
             action={
-              <a className="inline-link" href={item.linkTarget}>
+              <button type="button" className="inline-link" onClick={() => onAction(item.linkTarget)}>
                 {item.linkLabel}
-              </a>
+              </button>
             }
           />
         ))}
