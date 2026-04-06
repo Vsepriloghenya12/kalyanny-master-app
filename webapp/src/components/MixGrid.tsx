@@ -1,4 +1,6 @@
 import type { Mix } from '../types';
+import { getMixRating } from '../mixMeta';
+import { StarRating } from './StarRating';
 
 type MixGridProps = {
   mixes: Mix[];
@@ -22,6 +24,7 @@ export function MixGrid({ mixes, favorites, onOpen, onToggleFavorite, layout = '
               <div>
                 <h3>{mix.title}</h3>
                 <p>{mix.subtitle}</p>
+                <StarRating rating={getMixRating(mix)} className="mix-card__rating" />
               </div>
               <button type="button" className="action-button action-button--small" onClick={() => onOpen(mix)}>
                 Подробнее

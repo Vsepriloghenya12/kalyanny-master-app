@@ -1,6 +1,6 @@
 :root {
-  --bg: #080808;
-  --bg-deep: #050608;
+  --bg: #0b2827;
+  --bg-deep: #071315;
   --panel: #111111;
   --panel-2: #17181b;
   --text: #f2f2f2;
@@ -28,15 +28,16 @@
 }
 
 html {
-  background: #000;
+  background: #071315;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at top, rgba(121, 20, 20, 0.2), transparent 28%),
-    linear-gradient(180deg, #060606, #0b0b0b 40%, #060606);
+    radial-gradient(circle at 82% 2%, rgba(172, 244, 231, 0.16), transparent 28%),
+    radial-gradient(circle at 12% 18%, rgba(107, 209, 194, 0.16), transparent 36%),
+    linear-gradient(165deg, #0b2827 0%, #123d3a 34%, #0b2224 68%, #071315 100%);
   color: var(--text);
   font-family: var(--font-body);
   text-rendering: optimizeLegibility;

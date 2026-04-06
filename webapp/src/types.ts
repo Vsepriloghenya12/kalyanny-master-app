@@ -19,7 +19,7 @@ export type Mix = {
   isPopular: boolean;
 };
 
-export type ProductType = 'tobacco' | 'hookah';
+export type ProductType = 'tobacco' | 'hookah' | 'accessory';
 
 export type Product = {
   id: string;

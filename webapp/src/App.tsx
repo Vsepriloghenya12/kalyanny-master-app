@@ -4,21 +4,24 @@ import { fetchContent } from './api';
 import { BottomNav } from './components/BottomNav';
 import { MixModal } from './components/MixModal';
 import { MobileShell } from './components/MobileShell';
+import { ProductModal } from './components/ProductModal';
 import { TopLogo } from './components/TopLogo';
 import { useFavorites } from './hooks/useFavorites';
-import { CatalogPage, type CatalogFilter } from './pages/CatalogPage';
+import { CatalogPage, type CatalogFilter, type CatalogFocusTarget } from './pages/CatalogPage';
 import { FavoritesPage } from './pages/FavoritesPage';
 import { HomePage } from './pages/HomePage';
-import { MixerPage } from './pages/MixerPage';
+import { KalyanMixerPage } from './pages/KalyanMixerPage';
 import { OwnerPage } from './pages/OwnerPage';
 import { PicksPage } from './pages/PicksPage';
-import type { AppContent, MainTab, Mix } from './types';
+import type { AppContent, MainTab, Mix, Product } from './types';
 
 function MainApp() {
   const [content, setContent] = useState<AppContent | null>(null);
   const [tab, setTab] = useState<MainTab>('home');
   const [catalogFilter, setCatalogFilter] = useState<CatalogFilter>('tobacco');
   const [activeMix, setActiveMix] = useState<Mix | null>(null);
+  const [activeProduct, setActiveProduct] = useState<Product | null>(null);
+  const [catalogFocusTarget, setCatalogFocusTarget] = useState<CatalogFocusTarget | null>(null);
   const [mixerView, setMixerView] = useState<'all' | 'popular'>('all');
   const favorites = useFavorites();
 
@@ -27,6 +30,20 @@ function MainApp() {
   }, []);
 
   const handleBannerAction = (target: string) => {
+    if (target.startsWith('brand:')) {
+      setTab('catalog');
+      setCatalogFilter('tobacco');
+      setCatalogFocusTarget({ type: 'brand', id: target.slice('brand:'.length) });
+      setMixerView('all');
+      return;
+    }
+    if (target.startsWith('product:')) {
+      setTab('catalog');
+      setCatalogFilter('tobacco');
+      setCatalogFocusTarget({ type: 'product', id: target.slice('product:'.length) });
+      setMixerView('all');
+      return;
+    }
     if (target === 'tab:mixer') {
       setTab('mixer');
       setMixerView('all');
@@ -43,15 +60,24 @@ function MainApp() {
       setMixerView('all');
       return;
     }
+    if (target === 'tab:accessories') {
+      setTab('catalog');
+      setCatalogFilter('accessories');
+      setCatalogFocusTarget({ type: 'accessories-all' });
+      setMixerView('all');
+      return;
+    }
     if (target === 'tab:tobacco') {
       setTab('catalog');
       setCatalogFilter('tobacco');
+      setCatalogFocusTarget({ type: 'tobacco-all' });
       setMixerView('all');
       return;
     }
     if (target === 'tab:hookah') {
       setTab('catalog');
       setCatalogFilter('hookah');
+      setCatalogFocusTarget({ type: 'hookah-all' });
       setMixerView('all');
       return;
     }
@@ -109,8 +135,11 @@ function MainApp() {
           content={content}
           filter={catalogFilter}
           onFilterChange={setCatalogFilter}
+          focusTarget={catalogFocusTarget}
+          onFocusTargetHandled={() => setCatalogFocusTarget(null)}
           favoriteProducts={favorites.state.products}
           favoriteBrands={favorites.state.brands}
+          onOpenProduct={setActiveProduct}
           onToggleProduct={favorites.toggleProduct}
           onToggleBrand={favorites.toggleBrand}
         />
@@ -122,22 +151,33 @@ function MainApp() {
     }
 
     return (
-      <MixerPage
+      <KalyanMixerPage
         content={content}
         favoriteMixes={favorites.state.mixes}
         onToggleFavoriteMix={favorites.toggleMix}
         onOpenMix={setActiveMix}
+        onOpenProduct={setActiveProduct}
         showPopularOnly={mixerView === 'popular'}
       />
     );
-  }, [catalogFilter, content, favorites.state.brands, favorites.state.mixes, favorites.state.products, favorites.toggleBrand, favorites.toggleMix, favorites.toggleProduct, mixerView, tab]);
+  }, [catalogFilter, catalogFocusTarget, content, favorites.state.brands, favorites.state.mixes, favorites.state.products, favorites.toggleBrand, favorites.toggleMix, favorites.toggleProduct, mixerView, tab]);
 
   return (
     <MobileShell>
-      <TopLogo />
-      <main className="app-content">{page}</main>
+      {tab === 'home' ? (
+        <div className="home-hero-stack">
+          <main className="app-content">{page}</main>
+          <TopLogo />
+        </div>
+      ) : (
+        <>
+          <TopLogo />
+          <main className="app-content">{page}</main>
+        </>
+      )}
       <BottomNav currentTab={tab} onChange={handleMainTabChange} />
       <MixModal mix={activeMix} onClose={() => setActiveMix(null)} />
+      <ProductModal product={activeProduct} isFavorite={activeProduct ? favorites.state.products.includes(activeProduct.id) : false} onClose={() => setActiveProduct(null)} onToggleFavorite={favorites.toggleProduct} />
     </MobileShell>
   );
 }

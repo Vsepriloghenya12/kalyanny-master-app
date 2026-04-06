@@ -6,27 +6,19 @@
   "banners": [
     {
       "id": "banner-1",
-      "title": "Создай свой микс",
-      "subtitle": "Подбери идеальное сочетание вкусов и найди готовые рецепты для чаши.",
-      "image": "/media/hero-banner-main.png",
-      "buttonLabel": "Открыть миксер",
-      "buttonTarget": "tab:mixer"
+      "title": "Black Burn Citrus Boom",
+      "subtitle": "Яркий цитрус, лед и плотный фруктовый профиль для сочных миксов.",
+      "image": "/media/blackburn-citrus-banner.png",
+      "buttonLabel": "Открыть бренд",
+      "buttonTarget": "brand:brand-blackburn"
     },
     {
       "id": "banner-2",
-      "title": "Новые вкусы сезона",
-      "subtitle": "Свежие лимитки, тропические линии и ягодные сочетания уже в каталоге.",
-      "image": "/media/mix-tropic.png",
-      "buttonLabel": "Смотреть новинки",
-      "buttonTarget": "tab:tobacco"
-    },
-    {
-      "id": "banner-3",
-      "title": "Бренды и линейки",
-      "subtitle": "Собрали главные бренды, сильные стороны и ключевые продукты в одном месте.",
-      "image": "/media/mix-berry.png",
-      "buttonLabel": "Открыть бренды",
-      "buttonTarget": "tab:brands"
+      "title": "Starline Citrus Boom",
+      "subtitle": "Солнечный цитрус, мягкая сладость и удобная база для миксов.",
+      "image": "/media/starline-citrus-banner.png",
+      "buttonLabel": "Смотреть табак",
+      "buttonTarget": "product:prod-starline-citrus"
     }
   ],
   "mixes": [
@@ -110,6 +102,17 @@
       "isNew": false
     },
     {
+      "id": "prod-starline-citrus",
+      "title": "Starline Citrus Boom",
+      "brand": "Starline",
+      "type": "tobacco",
+      "line": "Original",
+      "strength": "Средняя",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Сочный цитрусовый профиль с мягкой сладостью и чистым финишем.",
+      "isNew": true
+    },
+    {
       "id": "prod-mattpear-simplem",
       "title": "MattPear Simple M",
       "brand": "MattPear",
@@ -130,6 +133,50 @@
       "image": "/media/icon-hookahs.png",
       "description": "Современный кальян с модульной конструкцией и чистым дизайном.",
       "isNew": false
+    },
+    {
+      "id": "prod-accessory-oblako-bowl",
+      "title": "Oblako Phunnel M",
+      "brand": "Oblako",
+      "type": "accessory",
+      "line": "Чаши",
+      "strength": "Phunnel",
+      "image": "/media/icon-accessories.png",
+      "description": "Универсальная чаша для сочных миксов, держит жар ровно и спокойно раскрывает вкус.",
+      "isNew": true
+    },
+    {
+      "id": "prod-accessory-nagrani-hmd",
+      "title": "Na Grani HMD",
+      "brand": "Na Grani",
+      "type": "accessory",
+      "line": "Калауды",
+      "strength": "HMD",
+      "image": "/media/icon-accessories.png",
+      "description": "Аксессуар для контроля жара: помогает держать стабильную температуру без лишней суеты.",
+      "isNew": false
+    },
+    {
+      "id": "prod-accessory-master-tongs",
+      "title": "Master Tongs",
+      "brand": "Kalyanny",
+      "type": "accessory",
+      "line": "Щипцы",
+      "strength": "Металл",
+      "image": "/media/icon-accessories.png",
+      "description": "Удобные щипцы с цепким хватом для угля и аккуратной работы с чашей.",
+      "isNew": false
+    },
+    {
+      "id": "prod-accessory-clean-kit",
+      "title": "Clean Kit",
+      "brand": "Kalyanny",
+      "type": "accessory",
+      "line": "Уход",
+      "strength": "Набор",
+      "image": "/media/icon-accessories.png",
+      "description": "Набор для ухода за шахтой, колбой и мелкими деталями после покура.",
+      "isNew": true
     }
   ],
   "brands": [
@@ -156,6 +203,14 @@
       "image": "/media/icon-brands.png",
       "description": "Премиальный характер, древесные и сигарные оттенки, много взрослой глубины.",
       "highlight": "Плотные сложные вкусы"
+    },
+    {
+      "id": "brand-starline",
+      "title": "Starline",
+      "country": "Россия",
+      "image": "/media/brand-logo-starline.png",
+      "description": "Мягкие фруктовые и цитрусовые вкусы для легких повседневных миксов.",
+      "highlight": "Яркий цитрус"
     }
   ],
   "news": [

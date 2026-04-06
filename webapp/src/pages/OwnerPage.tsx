@@ -10,14 +10,14 @@ const OWNER_TABS: Array<{ id: OwnerTab; label: string; description: string }> = 
   { id: 'app', label: 'Основное', description: 'Название приложения и подзаголовок витрины.' },
   { id: 'banners', label: 'Баннеры', description: 'Главные баннеры на первом экране.' },
   { id: 'mixes', label: 'Миксы', description: 'Карточки миксов, теги и описания.' },
-  { id: 'products', label: 'Продукция', description: 'Каталог табаков и кальянов.' },
+  { id: 'products', label: 'Продукция', description: 'Каталог табаков, кальянов и аксессуаров.' },
   { id: 'brands', label: 'Бренды', description: 'Бренды, страны и особенности.' },
   { id: 'news', label: 'Новости', description: 'Новости и ссылки внутри приложения.' },
   { id: 'collections', label: 'Подборки', description: 'Тематические подборки и ID миксов.' }
 ];
 
 function emptyBanner(): Banner {
-  return { id: crypto.randomUUID(), title: 'Новый баннер', subtitle: 'Описание баннера', image: '/media/hero-banner-main.png', buttonLabel: 'Открыть', buttonTarget: '#catalog' };
+  return { id: crypto.randomUUID(), title: 'Новый баннер', subtitle: 'Описание баннера', image: '/media/hero-banner-main.png', buttonLabel: 'Открыть', buttonTarget: 'tab:tobacco' };
 }
 
 function emptyMix(): Mix {
@@ -79,6 +79,25 @@ function emptyCollection(): Collection {
     description: 'Описание подборки',
     mixIds: []
   };
+}
+
+function getBannerTargetOptions(content: AppContent) {
+  const productTypeLabels: Record<Product['type'], string> = {
+    tobacco: 'Табак',
+    hookah: 'Кальян',
+    accessory: 'Аксессуар'
+  };
+
+  return [
+    { value: 'tab:tobacco', label: 'Страница: табаки' },
+    { value: 'tab:hookah', label: 'Страница: кальяны' },
+    { value: 'tab:accessories', label: 'Страница: аксессуары' },
+    { value: 'tab:brands', label: 'Страница: бренды' },
+    { value: 'tab:mixer', label: 'Страница: миксер' },
+    { value: 'tab:picks', label: 'Страница: подборки' },
+    ...content.brands.map((brand) => ({ value: `brand:${brand.id}`, label: `Бренд: ${brand.title}` })),
+    ...content.products.map((product) => ({ value: `product:${product.id}`, label: `${productTypeLabels[product.type]}: ${product.title}` }))
+  ];
 }
 
 export function OwnerPage() {
@@ -170,6 +189,7 @@ export function OwnerPage() {
     news: `${content.news.length} элементов`,
     collections: `${content.collections.length} элементов`
   };
+  const bannerTargetOptions = getBannerTargetOptions(content);
 
   return (
     <div className="owner-page">
@@ -237,7 +257,15 @@ export function OwnerPage() {
               <label><span>Подзаголовок</span><input value={banner.subtitle} onChange={(event) => setContent({ ...content, banners: content.banners.map((item) => item.id === banner.id ? { ...item, subtitle: event.target.value } : item) })} /></label>
               <label><span>Картинка URL</span><input value={banner.image} onChange={(event) => setContent({ ...content, banners: content.banners.map((item) => item.id === banner.id ? { ...item, image: event.target.value } : item) })} /></label>
               <label><span>Текст кнопки</span><input value={banner.buttonLabel} onChange={(event) => setContent({ ...content, banners: content.banners.map((item) => item.id === banner.id ? { ...item, buttonLabel: event.target.value } : item) })} /></label>
-              <label className="owner-grid__wide"><span>Ссылка кнопки</span><input value={banner.buttonTarget} onChange={(event) => setContent({ ...content, banners: content.banners.map((item) => item.id === banner.id ? { ...item, buttonTarget: event.target.value } : item) })} /></label>
+              <label className="owner-grid__wide">
+                <span>Куда ведет баннер</span>
+                <select value={banner.buttonTarget} onChange={(event) => setContent({ ...content, banners: content.banners.map((item) => item.id === banner.id ? { ...item, buttonTarget: event.target.value } : item) })}>
+                  {bannerTargetOptions.some((option) => option.value === banner.buttonTarget) ? null : <option value={banner.buttonTarget}>Текущая ссылка: {banner.buttonTarget}</option>}
+                  {bannerTargetOptions.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
+                </select>
+              </label>
             </div>
           </div>
         ))}
@@ -282,7 +310,7 @@ export function OwnerPage() {
             <div className="owner-grid owner-grid--two">
               <label><span>Название</span><input value={product.title} onChange={(event) => setContent({ ...content, products: content.products.map((item) => item.id === product.id ? { ...item, title: event.target.value } : item) })} /></label>
               <label><span>Бренд</span><input value={product.brand} onChange={(event) => setContent({ ...content, products: content.products.map((item) => item.id === product.id ? { ...item, brand: event.target.value } : item) })} /></label>
-              <label><span>Тип</span><select value={product.type} onChange={(event) => setContent({ ...content, products: content.products.map((item) => item.id === product.id ? { ...item, type: event.target.value as Product['type'] } : item) })}><option value="tobacco">Табак</option><option value="hookah">Кальян</option></select></label>
+              <label><span>Тип</span><select value={product.type} onChange={(event) => setContent({ ...content, products: content.products.map((item) => item.id === product.id ? { ...item, type: event.target.value as Product['type'] } : item) })}><option value="tobacco">Табак</option><option value="hookah">Кальян</option><option value="accessory">Аксессуар</option></select></label>
               <label><span>Линейка</span><input value={product.line} onChange={(event) => setContent({ ...content, products: content.products.map((item) => item.id === product.id ? { ...item, line: event.target.value } : item) })} /></label>
               <label><span>Крепость</span><input value={product.strength} onChange={(event) => setContent({ ...content, products: content.products.map((item) => item.id === product.id ? { ...item, strength: event.target.value } : item) })} /></label>
               <label><span>Новинка</span><select value={product.isNew ? 'yes' : 'no'} onChange={(event) => setContent({ ...content, products: content.products.map((item) => item.id === product.id ? { ...item, isNew: event.target.value === 'yes' } : item) })}><option value="yes">Да</option><option value="no">Нет</option></select></label>
