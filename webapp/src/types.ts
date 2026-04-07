@@ -73,4 +73,4 @@ export type AppContent = {
   collections: Collection[];
 };
 
-export type MainTab = 'home' | 'favorites' | 'catalog' | 'picks' | 'mixer';
+export type MainTab = 'home' | 'favorites' | 'catalog' | 'picks' | 'mixes' | 'mixer';

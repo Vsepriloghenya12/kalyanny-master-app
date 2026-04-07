@@ -1,12 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap");
+
 :root {
-  --bg: #0b2827;
-  --bg-deep: #071315;
+  --bg: #efe6dc;
+  --bg-deep: #b6c0ca;
   --panel: #111111;
   --panel-2: #17181b;
-  --text: #f2f2f2;
-  --text-soft: rgba(255, 255, 255, 0.86);
-  --muted: #bfbfbf;
-  --muted-2: rgba(255, 255, 255, 0.62);
+  --text: #141210;
+  --text-soft: rgba(20, 18, 16, 0.82);
+  --muted: rgba(20, 18, 16, 0.62);
+  --muted-2: rgba(20, 18, 16, 0.46);
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.14);
   --accent: #d81919;
@@ -18,9 +20,9 @@
   --radius: 26px;
   --radius-sm: 20px;
   --radius-lg: 28px;
-  --font-body: "Aptos", "Segoe UI", "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: "Segoe UI Variable Display", "Aptos Display", "Segoe UI", "Inter", system-ui, sans-serif;
-  --font-subtitle: "Aptos", "Segoe UI Variable Text", "Segoe UI", "Inter", system-ui, sans-serif;
+  --font-body: "Montserrat", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: "Montserrat", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-subtitle: "Montserrat", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {
@@ -28,18 +30,19 @@
 }
 
 html {
-  background: #071315;
+  background: #b6c0ca;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 82% 2%, rgba(172, 244, 231, 0.16), transparent 28%),
-    radial-gradient(circle at 12% 18%, rgba(107, 209, 194, 0.16), transparent 36%),
-    linear-gradient(165deg, #0b2827 0%, #123d3a 34%, #0b2224 68%, #071315 100%);
+    radial-gradient(circle at 18% 10%, rgba(255, 248, 236, 0.88), transparent 34%),
+    radial-gradient(circle at 82% 6%, rgba(226, 232, 240, 0.72), transparent 32%),
+    linear-gradient(165deg, #f4eee6 0%, #e8dfd6 38%, #cdd4dc 70%, #b6c0ca 100%);
   color: var(--text);
   font-family: var(--font-body);
+  font-weight: 400;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

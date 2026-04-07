@@ -18,9 +18,11 @@ export function MixModal({ mix, onClose }: MixModalProps) {
         <button type="button" className="modal-sheet__close" onClick={onClose} aria-label="Закрыть">
           ×
         </button>
-        <div className="modal-sheet__hero" style={{ backgroundImage: `linear-gradient(180deg, rgba(5,5,5,.08), rgba(5,5,5,.88)), url(${mix.image})` }}>
-          <h3>{mix.title}</h3>
-          <p>{mix.subtitle}</p>
+        <div className="modal-sheet__hero" style={{ backgroundImage: `linear-gradient(180deg, rgba(255,248,236,.04), rgba(244,238,230,.32)), url(${mix.image})` }}>
+          <div className="modal-sheet__hero-text profile-badge">
+            <span>{mixStrength}</span>
+            <span>{mixDirection}</span>
+          </div>
         </div>
         <div className="modal-sheet__body">
           <section className="modal-sheet__section">

@@ -11,6 +11,7 @@ import { CatalogPage, type CatalogFilter, type CatalogFocusTarget } from './page
 import { FavoritesPage } from './pages/FavoritesPage';
 import { HomePage } from './pages/HomePage';
 import { KalyanMixerPage } from './pages/KalyanMixerPage';
+import { MixerPage } from './pages/MixerPage';
 import { OwnerPage } from './pages/OwnerPage';
 import { PicksPage } from './pages/PicksPage';
 import type { AppContent, MainTab, Mix, Product } from './types';
@@ -46,6 +47,11 @@ function MainApp() {
     }
     if (target === 'tab:mixer') {
       setTab('mixer');
+      setMixerView('all');
+      return;
+    }
+    if (target === 'tab:mixes') {
+      setTab('mixes');
       setMixerView('all');
       return;
     }
@@ -90,7 +96,7 @@ function MainApp() {
   };
 
   const handleOpenPopularMixes = () => {
-    setTab('mixer');
+    setTab('mixes');
     setMixerView('popular');
   };
 
@@ -148,6 +154,18 @@ function MainApp() {
 
     if (tab === 'picks') {
       return <PicksPage content={content} />;
+    }
+
+    if (tab === 'mixes') {
+      return (
+        <MixerPage
+          content={content}
+          favoriteMixes={favorites.state.mixes}
+          onToggleFavoriteMix={favorites.toggleMix}
+          onOpenMix={setActiveMix}
+          showPopularOnly={mixerView === 'popular'}
+        />
+      );
     }
 
     return (

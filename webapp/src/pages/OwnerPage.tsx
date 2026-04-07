@@ -93,6 +93,7 @@ function getBannerTargetOptions(content: AppContent) {
     { value: 'tab:hookah', label: 'Страница: кальяны' },
     { value: 'tab:accessories', label: 'Страница: аксессуары' },
     { value: 'tab:brands', label: 'Страница: бренды' },
+    { value: 'tab:mixes', label: 'Страница: миксы' },
     { value: 'tab:mixer', label: 'Страница: миксер' },
     { value: 'tab:picks', label: 'Страница: подборки' },
     ...content.brands.map((brand) => ({ value: `brand:${brand.id}`, label: `Бренд: ${brand.title}` })),

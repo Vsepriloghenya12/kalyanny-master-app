@@ -37,11 +37,11 @@ const FALLBACK_HOME_BANNERS: Banner[] = [
   }
 ];
 
-const HOME_ICONS = [
-  { image: '/media/icon-tobaccos.png', label: 'Табаки', target: 'tab:tobacco' },
-  { image: '/media/icon-hookahs.png', label: 'Кальяны', target: 'tab:hookah' },
-  { image: '/media/icon-mixes.png', label: 'Миксы', target: 'tab:mixer' },
-  { image: '/media/icon-accessories.png', label: 'Аксессуары', target: 'tab:accessories' }
+const HOME_CATEGORY_LINKS = [
+  { icon: '/media/home-category-tobacco.png', label: 'Табаки', target: 'tab:tobacco' },
+  { icon: '/media/home-category-hookah.png', label: 'Кальяны', target: 'tab:hookah' },
+  { icon: '/media/home-category-mixes.png', label: 'Миксы', target: 'tab:mixes' },
+  { icon: '/media/home-category-accessories.png', label: 'Аксессуары', target: 'tab:accessories' }
 ];
 
 const BRAND_FILTERS = [
@@ -60,15 +60,6 @@ const TASTE_LABELS: Record<string, string> = {
   пряности: 'Пряный',
   десерт: 'Десертный'
 };
-
-function formatMixCount(count: number) {
-  const lastDigit = count % 10;
-  const lastTwoDigits = count % 100;
-
-  if (lastDigit === 1 && lastTwoDigits !== 11) return `${count} микс`;
-  if ([2, 3, 4].includes(lastDigit) && ![12, 13, 14].includes(lastTwoDigits)) return `${count} микса`;
-  return `${count} миксов`;
-}
 
 export function HomePage({
   content,
@@ -104,7 +95,6 @@ export function HomePage({
           count: mixes.length,
           image: sampleMix?.image ?? '/media/mix-tropic.png',
           label: TASTE_LABELS[note] ?? note,
-          sampleTitle: sampleMix?.title ?? 'Авторский микс',
           description: getTasteDescription(note),
           strength: getTasteStrength(mixes),
           mixes
@@ -164,10 +154,11 @@ export function HomePage({
         </div>
       </section>
 
-      <section className="home-icons" aria-label="Категории">
-        {HOME_ICONS.map((item) => (
-          <button key={item.label} type="button" className="home-icons__button" onClick={() => onBannerAction(item.target)} aria-label={item.label}>
-            <img src={item.image} alt={item.label} />
+      <section className="home-category-menu" aria-label="Категории">
+        {HOME_CATEGORY_LINKS.map((item) => (
+          <button key={item.label} type="button" className="home-category-menu__button" onClick={() => onBannerAction(item.target)} aria-label={item.label}>
+            <img src={item.icon} alt="" aria-hidden="true" />
+            <span>{item.label}</span>
           </button>
         ))}
       </section>
@@ -185,8 +176,8 @@ export function HomePage({
         <div className="home-top-mixes__rail">
           {topMixes.map((mix) => {
             const isFavorite = favoriteMixes.includes(mix.id);
-            const mixDirection = getMixDirection(mix);
             const mixStrength = getMixStrength(mix);
+            const mixDirection = getMixDirection(mix);
 
             return (
               <div className="home-top-mix-item" key={mix.id}>
@@ -214,19 +205,9 @@ export function HomePage({
                   >
                     ♥
                   </button>
-                  <div className="home-top-mix-card__content">
-                    <h3>{mix.title}</h3>
-                    <p>{mix.subtitle}</p>
-                    <dl className="home-top-mix-card__meta">
-                      <div>
-                        <dt>Крепость</dt>
-                        <dd>{mixStrength}</dd>
-                      </div>
-                      <div>
-                        <dt>Вкус</dt>
-                        <dd>{mixDirection}</dd>
-                      </div>
-                    </dl>
+                  <div className="home-top-mix-card__content profile-badge">
+                    <span>{mixStrength}</span>
+                    <span>{mixDirection}</span>
                   </div>
                 </article>
                 <StarRating rating={getMixRating(mix)} className="home-top-mix-rating" />
@@ -276,15 +257,9 @@ export function HomePage({
                 }
               }}
             >
-              <div className="home-top-taste-card__content">
-                <h3>{taste.label}</h3>
-                <p>{taste.sampleTitle}</p>
-                <dl className="home-top-taste-card__meta">
-                  <div>
-                    <dt>Миксы</dt>
-                    <dd>{formatMixCount(taste.count)}</dd>
-                  </div>
-                </dl>
+              <div className="home-top-taste-card__content profile-badge">
+                <span>{taste.strength}</span>
+                <span>{taste.label}</span>
               </div>
             </article>
           ))}

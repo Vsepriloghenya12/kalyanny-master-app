@@ -20,10 +20,11 @@ export function ProductModal({ product, isFavorite, onClose, onToggleFavorite }:
         <button type="button" className="modal-sheet__close" onClick={onClose} aria-label="Закрыть">
           ×
         </button>
-        <div className="modal-sheet__hero product-modal__hero" style={{ backgroundImage: `linear-gradient(180deg, rgba(5,5,5,.08), rgba(5,5,5,.9)), url(${product.image})` }}>
-          <p className="product-modal__eyebrow">{product.brand}</p>
-          <h3>{product.title}</h3>
-          <p>{product.line}</p>
+        <div className="modal-sheet__hero product-modal__hero" style={{ backgroundImage: `linear-gradient(180deg, rgba(255,248,236,.04), rgba(244,238,230,.32)), url(${product.image})` }}>
+          <div className="modal-sheet__hero-text profile-badge">
+            <span>{product.strength}</span>
+            <span>{product.line}</span>
+          </div>
         </div>
         <div className="modal-sheet__body">
           <section className="modal-sheet__section">

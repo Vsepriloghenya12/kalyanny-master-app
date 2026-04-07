@@ -1,5 +1,5 @@
 import type { Mix } from '../types';
-import { getMixRating } from '../mixMeta';
+import { getMixDirection, getMixRating, getMixStrength } from '../mixMeta';
 import { StarRating } from './StarRating';
 
 type MixGridProps = {
@@ -15,6 +15,8 @@ export function MixGrid({ mixes, favorites, onOpen, onToggleFavorite, layout = '
     <div className={layout === 'rail' ? 'mix-grid mix-grid--rail' : 'mix-grid'}>
       {mixes.map((mix) => {
         const isFavorite = favorites.includes(mix.id);
+        const mixStrength = getMixStrength(mix);
+        const mixDirection = getMixDirection(mix);
         return (
           <article key={mix.id} className={layout === 'rail' ? 'mix-card mix-card--rail' : 'mix-card'} style={{ backgroundImage: `linear-gradient(180deg, rgba(10,10,10,.12), rgba(10,10,10,.9)), url(${mix.image})` }}>
             <button type="button" className={isFavorite ? 'mix-card__heart is-active' : 'mix-card__heart'} onClick={() => onToggleFavorite(mix.id)} aria-label="Добавить в избранное">
@@ -22,8 +24,10 @@ export function MixGrid({ mixes, favorites, onOpen, onToggleFavorite, layout = '
             </button>
             <div className="mix-card__content">
               <div>
-                <h3>{mix.title}</h3>
-                <p>{mix.subtitle}</p>
+                <div className="mix-card__text profile-badge">
+                  <span>{mixStrength}</span>
+                  <span>{mixDirection}</span>
+                </div>
                 <StarRating rating={getMixRating(mix)} className="mix-card__rating" />
               </div>
               <button type="button" className="action-button action-button--small" onClick={() => onOpen(mix)}>
