@@ -7,18 +7,36 @@
   max-width: 430px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 18px 14px 144px;
+  padding: 18px 0 144px;
   position: relative;
+  isolation: isolate;
   background:
-    radial-gradient(circle at 18% 10%, rgba(255, 248, 236, 0.9), transparent 34%),
-    radial-gradient(circle at 82% 8%, rgba(226, 232, 240, 0.76), transparent 32%),
-    radial-gradient(circle at 52% 66%, rgba(231, 211, 202, 0.62), transparent 42%),
-    linear-gradient(165deg, #f4eee6 0%, #e8dfd6 38%, #cdd4dc 70%, #b6c0ca 100%);
+    radial-gradient(circle at 6% 4%, rgba(255, 255, 255, 0.99), transparent 24%),
+    radial-gradient(circle at 88% 10%, rgba(234, 205, 178, 0.62), transparent 28%),
+    radial-gradient(circle at 44% 36%, rgba(255, 242, 225, 0.72), transparent 30%),
+    radial-gradient(circle at 66% 72%, rgba(222, 203, 190, 0.34), transparent 34%),
+    radial-gradient(circle at 74% 96%, rgba(186, 204, 223, 0.52), transparent 38%),
+    linear-gradient(148deg, #fffaf3 0%, #f8ecde 22%, #efdecd 46%, #ddd5d6 72%, #c3cfdb 100%);
   overflow-x: hidden;
 }
 
+.mobile-shell::before {
+  content: "";
+  position: absolute;
+  inset: -10% -8% 14%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.8), transparent 24%),
+    radial-gradient(circle at 82% 18%, rgba(240, 203, 171, 0.44), transparent 28%),
+    radial-gradient(circle at 50% 52%, rgba(255, 240, 221, 0.34), transparent 32%),
+    radial-gradient(circle at 70% 88%, rgba(180, 197, 216, 0.34), transparent 30%);
+  filter: blur(22px);
+  opacity: 0.92;
+}
+
 .top-logo {
-  padding: 4px 4px 18px;
+  padding: 4px 14px 18px;
 }
 
 .top-logo__image {
@@ -31,12 +49,16 @@
 .app-content {
   display: grid;
   gap: 24px;
-  padding-bottom: 24px;
+  padding: 0 14px 24px;
 }
 
 .home-hero-stack {
   position: relative;
-  margin: -18px -14px 0;
+  margin: -18px 0 0;
+}
+
+.home-hero-stack .app-content {
+  padding-inline: 0;
 }
 
 .home-hero-stack .top-logo {
@@ -51,7 +73,7 @@
 .home-hero-stack .top-logo__image {
   width: 220px;
   max-width: 220px;
-  transform: scaleY(2);
+  transform: scaleY(1);
   transform-origin: top left;
 }
 
@@ -112,7 +134,7 @@
 .home-category-menu {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin: 0 14px;
+  margin: 0 10px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.44);
   border-radius: 18px;
@@ -126,17 +148,18 @@
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr);
   align-items: center;
-  justify-items: start;
-  column-gap: 4px;
+  justify-content: center;
+  justify-items: center;
+  column-gap: 2px;
   min-width: 0;
-  min-height: 50px;
-  padding: 0 5px;
+  min-height: 52px;
+  padding: 0 4px;
   border: 0;
   background: transparent;
   color: rgba(49, 45, 42, 0.82);
-  font-size: 11px;
+  font-size: clamp(8.8px, 2.45vw, 10.5px);
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
   white-space: nowrap;
 }
 
@@ -148,8 +171,10 @@
 
 .home-category-menu__button span {
   min-width: 0;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: center;
 }
 
 .home-category-menu__button + .home-category-menu__button::before {
@@ -1687,6 +1712,276 @@
 .mixer-builder .mixer-suggested-mix {
   padding: 10px 0;
   border-bottom-color: rgba(232, 236, 240, 0.1);
+}
+
+.mixer-builder {
+  gap: 10px;
+}
+
+.mixer-builder__header {
+  gap: 3px;
+}
+
+.mixer-builder__header span {
+  max-width: 28ch;
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.mixer-builder .mixer-result-card {
+  gap: 8px;
+  padding-bottom: 8px;
+}
+
+.mixer-builder .mixer-result-card__orb {
+  gap: 4px;
+}
+
+.mixer-builder .mixer-result-card__orb span {
+  font-size: 28px;
+}
+
+.mixer-builder .mixer-result-card__content {
+  gap: 2px;
+}
+
+.mixer-builder .mixer-result-card__content h2 {
+  font-size: 18px;
+  line-height: 1.02;
+}
+
+.mixer-builder .mixer-result-card__content span {
+  font-size: 10px;
+}
+
+.mixer-builder .mixer-meter-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 10px;
+}
+
+.mixer-builder .mixer-meter {
+  gap: 4px;
+}
+
+.mixer-builder .mixer-meter__top {
+  gap: 6px;
+  font-size: 9px;
+}
+
+.mixer-builder .mixer-meter__track {
+  height: 5px;
+}
+
+.mixer-builder .mixer-card {
+  gap: 6px;
+  padding: 0 0 8px;
+}
+
+.mixer-builder .mixer-card__header {
+  gap: 8px;
+}
+
+.mixer-builder .mixer-card__header h2 {
+  margin-top: 1px;
+  font-size: 15px;
+}
+
+.mixer-builder .mixer-card__header p {
+  font-size: 8px;
+}
+
+.mixer-builder .mixer-text-button {
+  font-size: 10px;
+}
+
+.mixer-builder .mixer-selected-list,
+.mixer-builder .mixer-recommendation-list,
+.mixer-builder .mixer-suggested-list,
+.mixer-builder .mixer-tobacco-list {
+  gap: 0;
+}
+
+.mixer-builder .mixer-selected-row,
+.mixer-builder .mixer-recommendation,
+.mixer-builder .mixer-preset-card {
+  padding: 0 0 8px;
+}
+
+.mixer-builder .mixer-selected-row {
+  gap: 6px;
+}
+
+.mixer-builder .mixer-selected-row__top {
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.mixer-builder .mixer-selected-row__icon,
+.mixer-builder .mixer-recommendation > span {
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+}
+
+.mixer-builder .mixer-selected-row h3 {
+  font-size: 13px;
+}
+
+.mixer-builder .mixer-selected-row p {
+  margin-top: 1px;
+  -webkit-line-clamp: 1;
+  font-size: 9px;
+  line-height: 1.15;
+}
+
+.mixer-builder .mixer-selected-row strong {
+  font-size: 14px;
+}
+
+.mixer-builder .mixer-slider,
+.mixer-builder .mixer-slider input[type="range"] {
+  height: 28px;
+}
+
+.mixer-builder .mixer-slider input[type="range"]::-webkit-slider-runnable-track,
+.mixer-builder .mixer-slider input[type="range"]::-moz-range-track {
+  height: 5px;
+}
+
+.mixer-builder .mixer-slider input[type="range"]::-webkit-slider-thumb {
+  width: 24px;
+  height: 24px;
+  margin-top: -10px;
+}
+
+.mixer-builder .mixer-slider input[type="range"]::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+}
+
+.mixer-builder .mixer-slider__thumb-icon {
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+}
+
+.mixer-builder .mixer-selected-row__remove {
+  font-size: 10px;
+}
+
+.mixer-builder .mixer-family-rail,
+.mixer-builder .mixer-preset-rail {
+  gap: 4px;
+}
+
+.mixer-builder .mixer-family-chip {
+  min-height: 22px;
+  padding: 0 7px;
+  font-size: 9px;
+}
+
+.mixer-builder .mixer-taste-grid {
+  grid-template-columns: repeat(auto-fit, minmax(62px, 1fr));
+  gap: 2px 2px;
+}
+
+.mixer-builder .mixer-taste-button {
+  min-height: 46px;
+  padding: 2px 1px 4px;
+  gap: 1px;
+}
+
+.mixer-builder .mixer-taste-button span {
+  font-size: 18px;
+}
+
+.mixer-builder .mixer-taste-button strong {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 9px;
+  line-height: 1.02;
+  min-height: 18px;
+  max-width: 100%;
+  letter-spacing: -0.05em;
+}
+
+.mixer-builder .mixer-taste-button small {
+  display: none;
+}
+
+.mixer-builder .mixer-recommendation {
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.mixer-builder .mixer-recommendation h3,
+.mixer-builder .mixer-suggested-mix h3,
+.mixer-builder .mixer-tobacco-example h3 {
+  font-size: 13px;
+}
+
+.mixer-builder .mixer-recommendation p,
+.mixer-builder .mixer-tobacco-example small {
+  margin-top: 1px;
+  font-size: 9px;
+  line-height: 1.15;
+}
+
+.mixer-builder .mixer-recommendation p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.mixer-builder .mixer-recommendation button {
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+}
+
+.mixer-builder .mixer-tobacco-example,
+.mixer-builder .mixer-suggested-mix {
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.mixer-builder .mixer-tobacco-example img,
+.mixer-builder .mixer-suggested-mix img {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.mixer-builder .mixer-tobacco-example p,
+.mixer-builder .mixer-suggested-mix p {
+  font-size: 8px;
+}
+
+.mixer-builder .mixer-tobacco-example > span {
+  max-width: 64px;
+  font-size: 9px;
+}
+
+.mixer-builder .mixer-preset-card {
+  flex-basis: 92px;
+  gap: 3px;
+}
+
+.mixer-builder .mixer-preset-card span {
+  font-size: 15px;
+}
+
+.mixer-builder .mixer-preset-card strong {
+  font-size: 10px;
+}
+
+.mixer-builder .mixer-preset-card small {
+  font-size: 8px;
+  line-height: 1.12;
 }
 
 .bottom-nav {

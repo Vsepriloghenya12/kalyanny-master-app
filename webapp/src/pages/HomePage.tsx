@@ -41,7 +41,7 @@ const HOME_CATEGORY_LINKS = [
   { icon: '/media/home-category-tobacco.png', label: 'Табаки', target: 'tab:tobacco' },
   { icon: '/media/home-category-hookah.png', label: 'Кальяны', target: 'tab:hookah' },
   { icon: '/media/home-category-mixes.png', label: 'Миксы', target: 'tab:mixes' },
-  { icon: '/media/home-category-accessories.png', label: 'Аксессуары', target: 'tab:accessories' }
+  { icon: '/media/home-category-accessories.png', label: 'Прочее', target: 'tab:accessories' }
 ];
 
 const BRAND_FILTERS = [
