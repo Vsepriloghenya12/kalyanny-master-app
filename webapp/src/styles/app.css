@@ -233,14 +233,14 @@
 
 .home-top-mixes {
   min-width: 0;
-  padding-left: 14px;
+  padding-left: 0;
 }
 
 .home-top-mixes__rail {
   display: flex;
   gap: 14px;
   overflow-x: auto;
-  padding: 2px 14px 10px 0;
+  padding: 2px 0 10px;
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -414,7 +414,7 @@
 .home-brand-filters,
 .home-top-tastes {
   min-width: 0;
-  padding-left: 14px;
+  padding-left: 0;
 }
 
 .home-brand-filters {
@@ -422,7 +422,7 @@
   align-items: center;
   gap: 16px;
   overflow-x: auto;
-  padding-right: 14px;
+  padding-right: 0;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
@@ -460,7 +460,7 @@
   display: flex;
   gap: 14px;
   overflow-x: auto;
-  padding: 2px 14px 10px 0;
+  padding: 2px 0 10px;
   scroll-snap-type: x proximity;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
