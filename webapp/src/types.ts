@@ -101,4 +101,4 @@ export type AppContent = {
   ratingSummaries?: RatingSummary[];
 };
 
-export type MainTab = 'home' | 'favorites' | 'catalog' | 'picks' | 'mixes' | 'mixer';
+export type MainTab = 'home' | 'favorites' | 'catalog' | 'picks' | 'mixes' | 'mixer' | 'tastes';

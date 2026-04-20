@@ -12,7 +12,7 @@ type HomePageProps = {
   onOpenMix: (mix: Mix) => void;
   setMainTab: (tab: MainTab) => void;
   onOpenPopularMixes: () => void;
-  onCatalogFilterChange: (filter: 'tobacco' | 'hookah' | 'accessories' | 'brands') => void;
+  onOpenAllTastes: () => void;
   onBannerAction: (target: string) => void;
   user: PublicUser | null;
   userRatings: UserRating[];
@@ -48,13 +48,6 @@ const HOME_CATEGORY_LINKS = [
   { icon: '/media/home-category-accessories.png', label: 'Прочее', target: 'tab:accessories' }
 ];
 
-const BRAND_FILTERS = [
-  { id: 'starline', title: 'Starline', logo: '/media/brand-logo-starline.png' },
-  { id: 'brand-2', title: 'Бренд 2', logo: '/media/brand-logo-filter-2.png' },
-  { id: 'blackburn', title: 'Black Burn', logo: '/media/brand-logo-blackburn.png' },
-  { id: 'brand-4', title: 'Бренд 4', logo: '/media/brand-logo-filter-4.png' }
-];
-
 const TASTE_LABELS: Record<string, string> = {
   сладкий: 'Сладкий',
   цитрус: 'Цитрус',
@@ -84,7 +77,7 @@ export function HomePage({
   onOpenMix,
   setMainTab: _setMainTab,
   onOpenPopularMixes,
-  onCatalogFilterChange: _onCatalogFilterChange,
+  onOpenAllTastes,
   onBannerAction,
   user,
   userRatings,
@@ -92,7 +85,6 @@ export function HomePage({
   onRate
 }: HomePageProps) {
   const [activeBannerIndex, setActiveBannerIndex] = useState(0);
-  const [activeBrandFilter, setActiveBrandFilter] = useState(BRAND_FILTERS[0].id);
   const [activeTaste, setActiveTaste] = useState<TasteProfile | null>(null);
   const touchStartX = useRef<number | null>(null);
   const homeBanners = content.banners.length ? content.banners : FALLBACK_HOME_BANNERS;
@@ -241,23 +233,9 @@ export function HomePage({
         <span className="home-section-divider__line" />
         <h2>Топ вкусы</h2>
         <span className="home-section-divider__line" />
-        <button type="button" className="home-section-divider__action" onClick={onOpenPopularMixes}>
+        <button type="button" className="home-section-divider__action" onClick={onOpenAllTastes}>
           Все
         </button>
-      </section>
-
-      <section className="home-brand-filters" aria-label="Быстрые фильтры по брендам">
-        {BRAND_FILTERS.map((brand) => (
-          <button
-            key={brand.id}
-            type="button"
-            className={brand.id === activeBrandFilter ? 'home-brand-filter is-active' : 'home-brand-filter'}
-            onClick={() => setActiveBrandFilter(brand.id)}
-            aria-label={brand.title}
-          >
-            <img src={brand.logo} alt={brand.title} />
-          </button>
-        ))}
       </section>
 
       <section className="home-top-tastes" aria-label="Топ вкусы">

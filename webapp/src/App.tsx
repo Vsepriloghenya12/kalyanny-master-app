@@ -16,10 +16,11 @@ import { KalyanMixerPage } from './pages/KalyanMixerPage';
 import { MixerPage } from './pages/MixerPage';
 import { OwnerPage } from './pages/OwnerPage';
 import { PicksPage } from './pages/PicksPage';
+import { TastesPage } from './pages/TastesPage';
 import type { AppContent, MainTab, Mix, Product, PublicUser, RatingSummary, RatingTargetType, UserRating } from './types';
 
 const USER_TOKEN_STORAGE_KEY = 'kalyanny-master-user-token';
-const MAIN_TABS: MainTab[] = ['home', 'favorites', 'catalog', 'picks', 'mixes', 'mixer'];
+const MAIN_TABS: MainTab[] = ['home', 'favorites', 'catalog', 'picks', 'mixes', 'mixer', 'tastes'];
 
 function getInitialTab(): MainTab {
   const tab = new URLSearchParams(window.location.search).get('tab');
@@ -155,6 +156,11 @@ function MainApp() {
     setMixerView('popular');
   };
 
+  const handleOpenAllTastes = () => {
+    setTab('tastes');
+    setMixerView('all');
+  };
+
   const handleUserSubmit = async (phone: string, nickname: string) => {
     const session = await registerUser(phone, nickname);
     localStorage.setItem(USER_TOKEN_STORAGE_KEY, session.token);
@@ -207,7 +213,7 @@ function MainApp() {
           onOpenMix={setActiveMix}
           setMainTab={handleMainTabChange}
           onOpenPopularMixes={handleOpenPopularMixes}
-          onCatalogFilterChange={setCatalogFilter}
+          onOpenAllTastes={handleOpenAllTastes}
           onBannerAction={handleBannerAction}
           user={currentUser}
           userRatings={userRatings}
@@ -261,6 +267,19 @@ function MainApp() {
           onToggleFavoriteMix={favorites.toggleMix}
           onOpenMix={setActiveMix}
           showPopularOnly={mixerView === 'popular'}
+        />
+      );
+    }
+
+    if (tab === 'tastes') {
+      return (
+        <TastesPage
+          content={content}
+          user={currentUser}
+          userRatings={userRatings}
+          onOpenMix={setActiveMix}
+          onLoginRequest={() => setIsAuthOpen(true)}
+          onRate={handleRate}
         />
       );
     }
