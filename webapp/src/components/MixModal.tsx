@@ -1,12 +1,18 @@
-import type { Mix } from '../types';
+import type { Mix, PublicUser, RatingSummary, RatingTargetType, UserRating } from '../types';
 import { getMixDirection, getMixStrength } from '../mixMeta';
+import { RatingControl } from './RatingControl';
 
 type MixModalProps = {
   mix: Mix | null;
+  user: PublicUser | null;
+  ratingSummary?: RatingSummary;
+  userRating?: UserRating;
   onClose: () => void;
+  onLoginRequest: () => void;
+  onRate: (targetType: RatingTargetType, targetId: string, value: number) => Promise<void>;
 };
 
-export function MixModal({ mix, onClose }: MixModalProps) {
+export function MixModal({ mix, user, ratingSummary, userRating, onClose, onLoginRequest, onRate }: MixModalProps) {
   if (!mix) return null;
 
   const mixDirection = getMixDirection(mix);
@@ -50,6 +56,22 @@ export function MixModal({ mix, onClose }: MixModalProps) {
             <h4>Как раскрывается</h4>
             <p>{mix.details}</p>
           </section>
+          {mix.authorNickname ? (
+            <section className="modal-sheet__section">
+              <h4>Автор</h4>
+              <p>{mix.authorNickname}</p>
+            </section>
+          ) : null}
+          <RatingControl
+            title="Оценить микс"
+            targetType="mix"
+            targetId={mix.id}
+            summary={ratingSummary}
+            userRating={userRating}
+            user={user}
+            onLoginRequest={onLoginRequest}
+            onRate={onRate}
+          />
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ const OWNER_LOGIN = process.env.OWNER_LOGIN || 'owner';
 const OWNER_PASSWORD = process.env.OWNER_PASSWORD || 'owner123';
 const JWT_SECRET = process.env.JWT_SECRET || 'change-me-now';
 const MAX_JSON_BODY_SIZE = 2 * 1024 * 1024;
+const USER_TOKEN_TTL_SECONDS = 30 * 24 * 60 * 60;
 
 const MIME_TYPES = {
   '.css': 'text/css; charset=utf-8',
@@ -35,6 +36,89 @@ function sendJson(res, statusCode, data) {
 
 function sendError(res, statusCode, message) {
   sendJson(res, statusCode, { error: message });
+}
+
+function getIsoDate() {
+  return new Date().toISOString();
+}
+
+function createId(prefix) {
+  return `${prefix}-${crypto.randomUUID()}`;
+}
+
+function sanitizeText(value, maxLength = 120) {
+  return String(value ?? '').replace(/\s+/g, ' ').trim().slice(0, maxLength);
+}
+
+function normalizePhone(value) {
+  const raw = String(value ?? '').trim();
+  const hasPlus = raw.startsWith('+');
+  const digits = raw.replace(/\D/g, '');
+
+  if (digits.length < 10 || digits.length > 15) return '';
+  return `${hasPlus ? '+' : '+'}${digits}`;
+}
+
+function normalizeContent(content) {
+  return {
+    ...content,
+    banners: Array.isArray(content?.banners) ? content.banners : [],
+    mixes: Array.isArray(content?.mixes) ? content.mixes : [],
+    products: Array.isArray(content?.products) ? content.products : [],
+    brands: Array.isArray(content?.brands) ? content.brands : [],
+    news: Array.isArray(content?.news) ? content.news : [],
+    collections: Array.isArray(content?.collections) ? content.collections : [],
+    users: Array.isArray(content?.users) ? content.users : [],
+    ratings: Array.isArray(content?.ratings) ? content.ratings : []
+  };
+}
+
+function getPublicUser(user) {
+  if (!user) return null;
+  return {
+    id: user.id,
+    nickname: user.nickname
+  };
+}
+
+function getRatingSummaries(ratings) {
+  const grouped = new Map();
+
+  ratings.forEach((rating) => {
+    if (!rating || typeof rating.value !== 'number') return;
+    const key = `${rating.targetType}:${rating.targetId}`;
+    const current = grouped.get(key) ?? {
+      targetType: rating.targetType,
+      targetId: rating.targetId,
+      count: 0,
+      total: 0
+    };
+
+    current.count += 1;
+    current.total += rating.value;
+    grouped.set(key, current);
+  });
+
+  return [...grouped.values()].map((item) => ({
+    targetType: item.targetType,
+    targetId: item.targetId,
+    count: item.count,
+    average: Math.round((item.total / item.count) * 10) / 10
+  }));
+}
+
+function getPublicContent(content) {
+  const normalized = normalizeContent(content);
+  const { users, ratings, ...publicContent } = normalized;
+  return {
+    ...publicContent,
+    ratingSummaries: getRatingSummaries(ratings)
+  };
+}
+
+function stripComputedContentFields(content) {
+  const { ratingSummaries, ...cleanContent } = content;
+  return cleanContent;
 }
 
 async function readJsonBody(req) {
@@ -88,6 +172,11 @@ function signOwnerToken() {
   return signPayload({ role: 'owner', iat: now, exp: now + 7 * 24 * 60 * 60 });
 }
 
+function signUserToken(userId) {
+  const now = Math.floor(Date.now() / 1000);
+  return signPayload({ role: 'user', sub: userId, iat: now, exp: now + USER_TOKEN_TTL_SECONDS });
+}
+
 function requireOwner(req, res) {
   const authorization = req.headers.authorization;
   if (!authorization?.startsWith('Bearer ')) {
@@ -108,6 +197,95 @@ function requireOwner(req, res) {
     sendError(res, 401, 'Недействительный токен');
     return false;
   }
+}
+
+async function requireUser(req, res) {
+  const authorization = req.headers.authorization;
+  if (!authorization?.startsWith('Bearer ')) {
+    sendError(res, 401, 'Требуется вход по телефону');
+    return null;
+  }
+
+  const token = authorization.replace('Bearer ', '');
+
+  try {
+    const payload = verifyPayload(token);
+    if (!payload || typeof payload !== 'object' || payload.role !== 'user' || typeof payload.sub !== 'string') {
+      sendError(res, 401, 'Недействительный токен пользователя');
+      return null;
+    }
+
+    const content = normalizeContent(await readContent());
+    const user = content.users.find((item) => item.id === payload.sub);
+    if (!user) {
+      sendError(res, 401, 'Пользователь не найден');
+      return null;
+    }
+
+    return { content, user };
+  } catch {
+    sendError(res, 401, 'Недействительный токен пользователя');
+    return null;
+  }
+}
+
+function getUserRatings(content, userId) {
+  return content.ratings.filter((rating) => rating.userId === userId);
+}
+
+function findRatingSummary(content, targetType, targetId) {
+  return getRatingSummaries(content.ratings).find((summary) => summary.targetType === targetType && summary.targetId === targetId) ?? {
+    targetType,
+    targetId,
+    average: 0,
+    count: 0
+  };
+}
+
+function validateRatingTarget(content, targetType, targetId) {
+  if (targetType === 'mix') {
+    return content.mixes.some((mix) => mix.id === targetId);
+  }
+
+  if (targetType === 'taste') {
+    return content.mixes.some((mix) => Array.isArray(mix.notes) && mix.notes.includes(targetId));
+  }
+
+  return false;
+}
+
+function buildUserMix(body, user) {
+  const title = sanitizeText(body.title, 80);
+  const ingredients = Array.isArray(body.ingredients)
+    ? body.ingredients.map((item) => sanitizeText(item, 40)).filter(Boolean).slice(0, 6)
+    : [];
+  const notes = Array.isArray(body.notes)
+    ? body.notes.map((item) => sanitizeText(item, 24).toLowerCase()).filter(Boolean).slice(0, 6)
+    : [];
+
+  if (!title || ingredients.length < 2 || notes.length < 1) {
+    return null;
+  }
+
+  const now = getIsoDate();
+  const subtitle = sanitizeText(body.subtitle, 120) || ingredients.join(' · ');
+  const description = sanitizeText(body.description, 260) || `Авторский микс от ${user.nickname}: ${ingredients.join(', ')}.`;
+  const details = sanitizeText(body.details, 420) || 'Добавлен пользователем через кальянный миксер. Пропорции можно корректировать под чашу, жар и желаемую плотность вкуса.';
+
+  return {
+    id: createId('mix-user'),
+    title,
+    subtitle,
+    image: sanitizeText(body.image, 180) || '/media/mix-tropic.png',
+    description,
+    details,
+    ingredients,
+    notes: [...new Set(notes)],
+    isPopular: false,
+    authorId: user.id,
+    authorNickname: user.nickname,
+    createdAt: now
+  };
 }
 
 function getStaticPath(urlPathname) {
@@ -166,7 +344,7 @@ async function handleRequest(req, res) {
 
   if (req.method === 'GET' && url.pathname === '/api/content') {
     const content = await readContent();
-    sendJson(res, 200, content);
+    sendJson(res, 200, getPublicContent(content));
     return;
   }
 
@@ -182,9 +360,127 @@ async function handleRequest(req, res) {
 
   if (req.method === 'PUT' && url.pathname === '/api/owner/content') {
     if (!requireOwner(req, res)) return;
-    const content = await readJsonBody(req);
-    const saved = await writeContent(content);
-    sendJson(res, 200, saved);
+    const existing = normalizeContent(await readContent());
+    const content = stripComputedContentFields(await readJsonBody(req));
+    const saved = await writeContent({
+      ...content,
+      users: Array.isArray(content.users) ? content.users : existing.users,
+      ratings: Array.isArray(content.ratings) ? content.ratings : existing.ratings
+    });
+    sendJson(res, 200, getPublicContent(saved));
+    return;
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/users/register') {
+    const { phone, nickname } = await readJsonBody(req);
+    const normalizedPhone = normalizePhone(phone);
+    const safeNickname = sanitizeText(nickname, 32);
+
+    if (!normalizedPhone) {
+      sendError(res, 400, 'Введите корректный номер телефона');
+      return;
+    }
+
+    if (safeNickname.length < 2) {
+      sendError(res, 400, 'Никнейм должен быть не короче 2 символов');
+      return;
+    }
+
+    const content = normalizeContent(await readContent());
+    const now = getIsoDate();
+    let user = content.users.find((item) => item.phone === normalizedPhone);
+
+    if (user) {
+      user = { ...user, nickname: safeNickname, updatedAt: now };
+      content.users = content.users.map((item) => (item.id === user.id ? user : item));
+    } else {
+      user = {
+        id: createId('user'),
+        phone: normalizedPhone,
+        nickname: safeNickname,
+        createdAt: now,
+        updatedAt: now
+      };
+      content.users = [...content.users, user];
+    }
+
+    await writeContent(content);
+    sendJson(res, 200, {
+      token: signUserToken(user.id),
+      user: getPublicUser(user),
+      ratings: getUserRatings(content, user.id)
+    });
+    return;
+  }
+
+  if (req.method === 'GET' && url.pathname === '/api/users/me') {
+    const session = await requireUser(req, res);
+    if (!session) return;
+    sendJson(res, 200, {
+      user: getPublicUser(session.user),
+      ratings: getUserRatings(session.content, session.user.id)
+    });
+    return;
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/users/ratings') {
+    const session = await requireUser(req, res);
+    if (!session) return;
+
+    const body = await readJsonBody(req);
+    const targetType = sanitizeText(body.targetType, 12);
+    const targetId = sanitizeText(body.targetId, 140);
+    const value = Number(body.value);
+
+    if (!['mix', 'taste'].includes(targetType) || !targetId || !Number.isFinite(value) || value < 1 || value > 5) {
+      sendError(res, 400, 'Некорректная оценка');
+      return;
+    }
+
+    if (!validateRatingTarget(session.content, targetType, targetId)) {
+      sendError(res, 404, 'Объект оценки не найден');
+      return;
+    }
+
+    const now = getIsoDate();
+    const existingRating = session.content.ratings.find((rating) => rating.userId === session.user.id && rating.targetType === targetType && rating.targetId === targetId);
+
+    if (existingRating) {
+      existingRating.value = Math.round(value);
+      existingRating.updatedAt = now;
+    } else {
+      session.content.ratings.push({
+        id: createId('rating'),
+        userId: session.user.id,
+        targetType,
+        targetId,
+        value: Math.round(value),
+        createdAt: now,
+        updatedAt: now
+      });
+    }
+
+    await writeContent(session.content);
+    sendJson(res, 200, {
+      rating: session.content.ratings.find((rating) => rating.userId === session.user.id && rating.targetType === targetType && rating.targetId === targetId),
+      summary: findRatingSummary(session.content, targetType, targetId)
+    });
+    return;
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/users/mixes') {
+    const session = await requireUser(req, res);
+    if (!session) return;
+
+    const mix = buildUserMix(await readJsonBody(req), session.user);
+    if (!mix) {
+      sendError(res, 400, 'Укажите название, минимум два вкуса и направление микса');
+      return;
+    }
+
+    session.content.mixes = [mix, ...session.content.mixes];
+    await writeContent(session.content);
+    sendJson(res, 201, { mix });
     return;
   }
 

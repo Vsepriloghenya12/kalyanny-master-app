@@ -3,7 +3,7 @@ import type { PointerEvent } from 'react';
 import { StarRating } from '../components/StarRating';
 import { TasteModal, type TasteProfile } from '../components/TasteModal';
 import { getMixDirection, getMixRating, getMixStrength, getTasteDescription, getTasteStrength } from '../mixMeta';
-import type { AppContent, Banner, MainTab, Mix } from '../types';
+import type { AppContent, Banner, MainTab, Mix, PublicUser, RatingSummary, RatingTargetType, UserRating } from '../types';
 
 type HomePageProps = {
   content: AppContent;
@@ -14,6 +14,10 @@ type HomePageProps = {
   onOpenPopularMixes: () => void;
   onCatalogFilterChange: (filter: 'tobacco' | 'hookah' | 'accessories' | 'brands') => void;
   onBannerAction: (target: string) => void;
+  user: PublicUser | null;
+  userRatings: UserRating[];
+  onLoginRequest: () => void;
+  onRate: (targetType: RatingTargetType, targetId: string, value: number) => Promise<void>;
 };
 
 const SWIPE_THRESHOLD = 40;
@@ -61,6 +65,18 @@ const TASTE_LABELS: Record<string, string> = {
   десерт: 'Десертный'
 };
 
+function findSummary(summaries: RatingSummary[] | undefined, targetType: RatingTargetType, targetId: string) {
+  return summaries?.find((summary) => summary.targetType === targetType && summary.targetId === targetId);
+}
+
+function findUserRating(ratings: UserRating[], targetType: RatingTargetType, targetId: string) {
+  return ratings.find((rating) => rating.targetType === targetType && rating.targetId === targetId);
+}
+
+function getVisibleRating(mix: Mix, summaries: RatingSummary[] | undefined) {
+  return findSummary(summaries, 'mix', mix.id)?.average ?? getMixRating(mix);
+}
+
 export function HomePage({
   content,
   favoriteMixes,
@@ -69,7 +85,11 @@ export function HomePage({
   setMainTab: _setMainTab,
   onOpenPopularMixes,
   onCatalogFilterChange: _onCatalogFilterChange,
-  onBannerAction
+  onBannerAction,
+  user,
+  userRatings,
+  onLoginRequest,
+  onRate
 }: HomePageProps) {
   const [activeBannerIndex, setActiveBannerIndex] = useState(0);
   const [activeBrandFilter, setActiveBrandFilter] = useState(BRAND_FILTERS[0].id);
@@ -210,7 +230,7 @@ export function HomePage({
                     <span>{mixDirection}</span>
                   </div>
                 </article>
-                <StarRating rating={getMixRating(mix)} className="home-top-mix-rating" />
+                <StarRating rating={getVisibleRating(mix, content.ratingSummaries)} className="home-top-mix-rating" />
               </div>
             );
           })}
@@ -268,11 +288,16 @@ export function HomePage({
 
       <TasteModal
         taste={activeTaste}
+        user={user}
+        ratingSummary={activeTaste ? findSummary(content.ratingSummaries, 'taste', activeTaste.note) : undefined}
+        userRating={activeTaste ? findUserRating(userRatings, 'taste', activeTaste.note) : undefined}
         onClose={() => setActiveTaste(null)}
         onOpenMix={(mix) => {
           setActiveTaste(null);
           onOpenMix(mix);
         }}
+        onLoginRequest={onLoginRequest}
+        onRate={onRate}
       />
     </>
   );

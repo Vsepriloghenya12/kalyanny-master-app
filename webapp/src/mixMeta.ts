@@ -1,17 +1,29 @@
 import type { Mix } from './types';
 
 const MIX_STRENGTH_BY_ID: Record<string, string> = {
-  'mix-tropic-breeze': 'Средняя',
-  'mix-berry-chill': 'Легкая',
-  'mix-citrus-spice': 'Средняя+',
-  'mix-dessert-cloud': 'Легкая'
+  'mix-pinkman-frost': 'Средняя',
+  'mix-black-cola-ice': 'Средняя+',
+  'mix-peach-yogurt-berry': 'Средняя',
+  'mix-grapefruit-mint': 'Средняя',
+  'mix-bananarama-cream': 'Легкая',
+  'mix-melon-frost': 'Легкая',
+  'mix-supernova-citrus': 'Крепкая',
+  'mix-tropic-cola': 'Средняя',
+  'mix-cookie-yogurt': 'Легкая',
+  'mix-kiwi-lemonade': 'Средняя'
 };
 
 const MIX_RATING_BY_ID: Record<string, number> = {
-  'mix-tropic-breeze': 4.8,
-  'mix-berry-chill': 4.7,
-  'mix-citrus-spice': 4.6,
-  'mix-dessert-cloud': 4.5
+  'mix-pinkman-frost': 4.8,
+  'mix-black-cola-ice': 4.7,
+  'mix-peach-yogurt-berry': 4.7,
+  'mix-grapefruit-mint': 4.6,
+  'mix-bananarama-cream': 4.4,
+  'mix-melon-frost': 4.5,
+  'mix-supernova-citrus': 4.6,
+  'mix-tropic-cola': 4.5,
+  'mix-cookie-yogurt': 4.3,
+  'mix-kiwi-lemonade': 4.4
 };
 
 const DIRECTION_BY_NOTE: Record<string, string> = {
@@ -37,7 +49,8 @@ const TASTE_DESCRIPTIONS: Record<string, string> = {
 const STRENGTH_WEIGHT: Record<string, number> = {
   Легкая: 1,
   Средняя: 2,
-  'Средняя+': 3
+  'Средняя+': 3,
+  Крепкая: 4
 };
 
 export function getMixStrength(mix: Mix) {

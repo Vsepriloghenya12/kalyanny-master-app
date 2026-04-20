@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { StarRating } from '../components/StarRating';
 import { getMixDirection, getMixRating, getMixStrength } from '../mixMeta';
-import type { AppContent, Mix } from '../types';
+import type { AppContent, Mix, RatingSummary } from '../types';
 
 type MixerPageProps = {
   content: AppContent;
@@ -31,6 +31,10 @@ function formatTasteLabel(taste: string) {
 
 function uniqueValues(values: string[]) {
   return [...new Set(values)].sort((first, second) => first.localeCompare(second, 'ru'));
+}
+
+function getVisibleRating(mix: Mix, summaries: RatingSummary[] | undefined) {
+  return summaries?.find((summary) => summary.targetType === 'mix' && summary.targetId === mix.id)?.average ?? getMixRating(mix);
 }
 
 export function MixerPage({ content, favoriteMixes, onToggleFavoriteMix, onOpenMix, showPopularOnly = false }: MixerPageProps) {
@@ -168,7 +172,7 @@ export function MixerPage({ content, favoriteMixes, onToggleFavoriteMix, onOpenM
                 </div>
                 <span>{mix.subtitle} · {mixStrength}</span>
                 <small>{mix.description}</small>
-                <StarRating rating={getMixRating(mix)} className="mixes-page__rating" />
+                <StarRating rating={getVisibleRating(mix, content.ratingSummaries)} className="mixes-page__rating" />
               </div>
               <div className="tobacco-list-item__side">
                 {mix.isPopular ? <span className="tobacco-list-item__badge">Top</span> : null}

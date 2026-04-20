@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, FormEvent } from 'react';
 import { StarRating } from '../components/StarRating';
 import { getMixDirection, getMixRating, getMixStrength } from '../mixMeta';
-import type { AppContent, Mix, Product } from '../types';
+import type { AppContent, Mix, Product, PublicUser, RatingSummary } from '../types';
 
 type KalyanMixerPageProps = {
   content: AppContent;
@@ -10,7 +10,20 @@ type KalyanMixerPageProps = {
   onToggleFavoriteMix: (id: string) => void;
   onOpenMix: (mix: Mix) => void;
   onOpenProduct: (product: Product) => void;
+  currentUser: PublicUser | null;
+  onLoginRequest: () => void;
+  onCreateMix: (input: CreateUserMixInput) => Promise<Mix>;
   showPopularOnly?: boolean;
+};
+
+type CreateUserMixInput = {
+  title: string;
+  subtitle: string;
+  image: string;
+  description: string;
+  details: string;
+  ingredients: string[];
+  notes: string[];
 };
 
 type MixerTaste = {
@@ -73,7 +86,16 @@ const TOBACCO_KEYWORDS_BY_TASTE: Record<string, string[]> = {
   vanilla: ['ваниль', 'vanilla', 'йогурт', 'yogurt', 'крем', 'cream', 'слив', 'десерт'],
   cream: ['слив', 'cream', 'йогурт', 'yogurt', 'крем', 'десерт'],
   cola: ['кола', 'cola'],
-  spice: ['прян', 'spice', 'oak', 'cured', 'древ', 'сигар']
+  spice: ['прян', 'spice', 'oak', 'cured', 'древ', 'сигар'],
+  pinkman: ['pinkman', 'пинкман', 'ягод', 'цитрус'],
+  frosty: ['frosty', 'холод', 'свеж', 'ice'],
+  lemonlime: ['lemon-lime', 'lemon lime', 'лимон', 'лайм', 'цитрус'],
+  blackcola: ['black cola', 'кола', 'cola'],
+  peachyogurt: ['peach killer', 'peach yogurt', 'персик', 'йогурт', 'cream'],
+  bananarama: ['bananarama', 'банан'],
+  melonade: ['melonade', 'дын', 'melon'],
+  kiwismoothie: ['kiwi smoothie', 'киви', 'kiwi'],
+  supernova: ['supernova', 'холод', 'лед', 'ice']
 };
 
 const MIXER_TASTES: MixerTaste[] = [
@@ -91,7 +113,16 @@ const MIXER_TASTES: MixerTaste[] = [
   { id: 'vanilla', name: 'Ваниль', icon: '🍦', family: 'Десерт', note: 'десерт', description: 'Кремовая округлость: смягчает резкие и кислые вкусы.', sweetness: 3.6, freshness: 0.8, strength: 1.6, body: 4, pairs: ['berries', 'lemon', 'cola'] },
   { id: 'cream', name: 'Сливки', icon: '🥛', family: 'Десерт', note: 'десерт', description: 'Плотный мягкий слой для десертного тела.', sweetness: 3.4, freshness: 0.5, strength: 1.5, body: 4.4, pairs: ['strawberry', 'peach', 'berries'] },
   { id: 'cola', name: 'Кола', icon: '🥤', family: 'Напитки', note: 'пряности', description: 'Сладкая газированная пряность, добавляет узнаваемый акцент.', sweetness: 3.7, freshness: 2, strength: 2.5, body: 2.8, pairs: ['orange', 'vanilla', 'pineapple'] },
-  { id: 'spice', name: 'Пряность', icon: '🌶️', family: 'Специи', note: 'пряности', description: 'Теплый взрослый штрих: хорошо работает маленькой долей.', sweetness: 1.2, freshness: 0.8, strength: 3.6, body: 3.3, pairs: ['orange', 'cola', 'vanilla'] }
+  { id: 'spice', name: 'Пряность', icon: '🌶️', family: 'Специи', note: 'пряности', description: 'Теплый взрослый штрих: хорошо работает маленькой долей.', sweetness: 1.2, freshness: 0.8, strength: 3.6, body: 3.3, pairs: ['orange', 'cola', 'vanilla'] },
+  { id: 'pinkman', name: 'Pinkman', icon: '🍓', family: 'Реальные вкусы', note: 'ягоды', description: 'Кисло-сладкая ягодно-цитрусовая база MustHave для ярких миксов.', sweetness: 3.5, freshness: 2.7, strength: 2.3, body: 2.8, pairs: ['frosty', 'lemonlime', 'bananarama'] },
+  { id: 'frosty', name: 'Frosty', icon: '❄️', family: 'Реальные вкусы', note: 'холодок', description: 'Холодный акцент MustHave: добавляет прохладный финиш без фруктовой сладости.', sweetness: 0.5, freshness: 4.8, strength: 1.5, body: 0.9, pairs: ['pinkman', 'melonade', 'blackcola'] },
+  { id: 'lemonlime', name: 'Lemon-Lime', icon: '🍋', family: 'Реальные вкусы', note: 'цитрус', description: 'Лимон и лайм MustHave: яркий кислый верх и чистый цитрусовый финиш.', sweetness: 1.5, freshness: 3.8, strength: 2, body: 1.6, pairs: ['pinkman', 'kiwismoothie', 'blackcola'] },
+  { id: 'blackcola', name: 'Black Cola', icon: '🥤', family: 'Реальные вкусы', note: 'пряности', description: 'Black Burn Black Cola: напиточная сладость и пряная газированность.', sweetness: 3.7, freshness: 2, strength: 2.7, body: 3, pairs: ['lemonlime', 'frosty', 'pineapple'] },
+  { id: 'peachyogurt', name: 'Peach Killer', icon: '🍑', family: 'Реальные вкусы', note: 'сладкий', description: 'Black Burn Peach Killer: сладкий персик для фруктовых и десертных миксов.', sweetness: 3.9, freshness: 1.6, strength: 2.2, body: 3.2, pairs: ['pinkman', 'bananarama', 'cream'] },
+  { id: 'bananarama', name: 'Bananarama', icon: '🍌', family: 'Реальные вкусы', note: 'десерт', description: 'MustHave Bananarama: плотный банан для десертной базы.', sweetness: 4.1, freshness: 0.6, strength: 1.9, body: 4.1, pairs: ['peachyogurt', 'pinkman', 'vanilla'] },
+  { id: 'melonade', name: 'Melonade', icon: '🍈', family: 'Реальные вкусы', note: 'сладкий', description: 'MustHave Melonade: сладкая дынная лимонадность для мягких миксов.', sweetness: 4, freshness: 2.4, strength: 1.9, body: 2.7, pairs: ['frosty', 'lemonlime', 'mint'] },
+  { id: 'kiwismoothie', name: 'Kiwi Smoothie', icon: '🥝', family: 'Реальные вкусы', note: 'сладкий', description: 'MustHave Kiwi Smoothie: зеленая фруктовая кислинка и лимонадное настроение.', sweetness: 3.2, freshness: 2.8, strength: 2.1, body: 2.7, pairs: ['lemonlime', 'frosty', 'bananarama'] },
+  { id: 'supernova', name: 'Supernova', icon: '🧊', family: 'Реальные вкусы', note: 'холодок', description: 'Darkside Supernova: крепкий холодный акцент для ледяного финиша.', sweetness: 0.4, freshness: 5, strength: 3.4, body: 1, pairs: ['lemonlime', 'grapefruit', 'blackcola'] }
 ];
 
 const STARTER_SELECTION: SelectedTaste[] = [
@@ -102,8 +133,9 @@ const STARTER_SELECTION: SelectedTaste[] = [
 
 const MIXER_PRESETS: Array<{ title: string; subtitle: string; tastes: SelectedTaste[] }> = [
   { title: 'Арбузный айс', subtitle: 'Сочно, свежо, без тяжести.', tastes: STARTER_SELECTION },
-  { title: 'Ягодный крем', subtitle: 'Плотнее и мягче, десертный финиш.', tastes: [{ id: 'berries', amount: 45 }, { id: 'cream', amount: 25 }, { id: 'strawberry', amount: 30 }] },
-  { title: 'Тропик кола', subtitle: 'Сладкая газировка с фруктовым верхом.', tastes: [{ id: 'mango', amount: 40 }, { id: 'pineapple', amount: 30 }, { id: 'cola', amount: 30 }] }
+  { title: 'Pinkman Frost', subtitle: 'Реальный ягодный холод.', tastes: [{ id: 'pinkman', amount: 45 }, { id: 'lemonlime', amount: 30 }, { id: 'frosty', amount: 25 }] },
+  { title: 'Black Cola Ice', subtitle: 'Газировка, цитрус и холод.', tastes: [{ id: 'blackcola', amount: 50 }, { id: 'lemonlime', amount: 25 }, { id: 'supernova', amount: 25 }] },
+  { title: 'Peach Cream', subtitle: 'Мягкий десертный профиль.', tastes: [{ id: 'peachyogurt', amount: 45 }, { id: 'bananarama', amount: 25 }, { id: 'pinkman', amount: 30 }] }
 ];
 
 const TASTE_BY_ID = MIXER_TASTES.reduce<Record<string, MixerTaste>>((acc, taste) => {
@@ -148,6 +180,10 @@ function getMood(metrics: MixerMetrics) {
 
 function getProductSearchText(product: Product) {
   return `${product.title} ${product.brand} ${product.line} ${product.strength} ${product.description}`.toLowerCase();
+}
+
+function getVisibleRating(mix: Mix, summaries: RatingSummary[] | undefined) {
+  return summaries?.find((summary) => summary.targetType === 'mix' && summary.targetId === mix.id)?.average ?? getMixRating(mix);
 }
 
 function getTobaccoExamples(products: Product[], selectedItems: SelectedTasteItem[]): TobaccoExample[] {
@@ -230,9 +266,12 @@ function buildRecommendations(selectedItems: SelectedTasteItem[], totalAmount: n
   return recommendations.length ? recommendations.slice(0, 4) : [{ title: 'Баланс хороший', description: 'Микс уже выглядит собранным. Если хочется ярче, добавь 5-10% контрастного акцента.', icon: '✅' }];
 }
 
-export function KalyanMixerPage({ content, favoriteMixes, onToggleFavoriteMix, onOpenMix, onOpenProduct, showPopularOnly = false }: KalyanMixerPageProps) {
+export function KalyanMixerPage({ content, favoriteMixes, onToggleFavoriteMix, onOpenMix, onOpenProduct, currentUser, onLoginRequest, onCreateMix, showPopularOnly = false }: KalyanMixerPageProps) {
   const [selectedTastes, setSelectedTastes] = useState<SelectedTaste[]>(STARTER_SELECTION);
   const [activeFamily, setActiveFamily] = useState(ALL_FILTER_VALUE);
+  const [mixTitle, setMixTitle] = useState('');
+  const [saveStatus, setSaveStatus] = useState('');
+  const [isSavingMix, setIsSavingMix] = useState(false);
 
   const selectedItems = useMemo(() => {
     return selectedTastes
@@ -290,6 +329,48 @@ export function KalyanMixerPage({ content, favoriteMixes, onToggleFavoriteMix, o
     setSelectedTastes((current) => current.filter((item) => item.id !== tasteId));
   };
 
+  const handleCreateMix = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!currentUser) {
+      onLoginRequest();
+      return;
+    }
+
+    if (selectedItems.length < 2) {
+      setSaveStatus('Для авторского микса выбери минимум два вкуса.');
+      return;
+    }
+
+    const ingredients = selectedItems.map((item) => item.taste.name);
+    const notes = [...new Set(selectedItems.map((item) => item.taste.note))];
+    const proportions = selectedItems.map((item) => `${item.taste.name} ${item.amount}%`).join(' · ');
+    const title = mixTitle.trim() || `${selectedItems[0].taste.name} ${selectedItems[1].taste.name}`;
+    const image = notes.includes('ягоды') ? '/media/mix-berry.png' : '/media/mix-tropic.png';
+
+    setSaveStatus('');
+    setIsSavingMix(true);
+
+    try {
+      const createdMix = await onCreateMix({
+        title,
+        subtitle: ingredients.join(' · '),
+        image,
+        description: `Авторский микс: ${flavorTitle.toLowerCase()}. Крепость: ${strengthLabel}.`,
+        details: `Рекомендуемые доли: ${proportions}. Общая загрузка по миксеру: ${totalAmount}%.`,
+        ingredients,
+        notes
+      });
+      setMixTitle('');
+      setSaveStatus('Микс добавлен в базу.');
+      onOpenMix(createdMix);
+    } catch (error) {
+      setSaveStatus(error instanceof Error ? error.message : 'Не удалось добавить микс.');
+    } finally {
+      setIsSavingMix(false);
+    }
+  };
+
   return (
     <section className="content-section mixer-builder" aria-label="Кальянный миксер">
       <header className="tobacco-page__header mixer-builder__header">
@@ -319,6 +400,24 @@ export function KalyanMixerPage({ content, favoriteMixes, onToggleFavoriteMix, o
           ))}
         </div>
       </section>
+
+      <form className="mixer-save-panel" onSubmit={handleCreateMix}>
+        <div>
+          <p>Авторский микс</p>
+          <h2>{currentUser ? `Добавить от ${currentUser.nickname}` : 'Войдите, чтобы добавить'}</h2>
+        </div>
+        {currentUser ? (
+          <>
+            <input value={mixTitle} onChange={(event) => setMixTitle(event.target.value)} placeholder="Название микса" />
+            <button type="submit" disabled={isSavingMix}>
+              {isSavingMix ? 'Сохраняем...' : 'В базу'}
+            </button>
+          </>
+        ) : (
+          <button type="button" onClick={onLoginRequest}>Войти</button>
+        )}
+        {saveStatus ? <small>{saveStatus}</small> : null}
+      </form>
 
       <section className="mixer-card mixer-selected-card" aria-label="Вкусы в чаше">
         <div className="mixer-card__header">
@@ -483,7 +582,7 @@ export function KalyanMixerPage({ content, favoriteMixes, onToggleFavoriteMix, o
                 <div>
                   <p>{getMixDirection(mix)} · {getMixStrength(mix)}</p>
                   <h3>{mix.title}</h3>
-                  <StarRating rating={getMixRating(mix)} className="mixes-page__rating" />
+                  <StarRating rating={getVisibleRating(mix, content.ratingSummaries)} className="mixes-page__rating" />
                 </div>
                 <button type="button" className={isFavorite ? 'tobacco-list-item__heart is-active' : 'tobacco-list-item__heart'} onClick={(event) => {
                   event.stopPropagation();

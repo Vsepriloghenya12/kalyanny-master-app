@@ -23,47 +23,113 @@
   ],
   "mixes": [
     {
-      "id": "mix-tropic-breeze",
-      "title": "Тропический бриз",
-      "subtitle": "Ананас · Манго · Киви",
-      "image": "/media/mix-tropic.png",
-      "description": "Сочный и яркий микс с мягкой сладостью и свежим фруктовым финишем.",
-      "details": "Хорошо раскрывается на средней жаре. Подходит для вечерних сессий и для тех, кто любит ароматные фруктовые чаши без приторности.",
-      "ingredients": ["Ананас", "Манго", "Киви"],
-      "notes": ["тропики", "сладкий", "цитрус"],
-      "isPopular": true
-    },
-    {
-      "id": "mix-berry-chill",
-      "title": "Ягодный чил",
-      "subtitle": "Черника · Малина · Мята",
+      "id": "mix-pinkman-frost",
+      "title": "Pinkman Frost",
+      "subtitle": "MustHave Pinkman · Frosty · Lemon-Lime",
       "image": "/media/mix-berry.png",
-      "description": "Плотный ягодный профиль с легким холодком и освежающей мятной нотой.",
-      "details": "Отличный вариант для летнего меню. Мята здесь не доминирует, а только подчеркивает ягоды и добавляет прохладу.",
-      "ingredients": ["Черника", "Малина", "Мята"],
-      "notes": ["ягоды", "холодок", "сладкий"],
+      "description": "Ягодно-цитрусовый микс с холодным финишем и чистой кислосладкой серединой.",
+      "details": "Рецепт: Pinkman 45%, Lemon-Lime 30%, Frosty 25%. Лучше курить на умеренном жаре, чтобы холод не перекрыл ягоды.",
+      "ingredients": ["MustHave Pinkman", "MustHave Lemon-Lime", "MustHave Frosty"],
+      "notes": ["ягоды", "цитрус", "холодок"],
       "isPopular": true
     },
     {
-      "id": "mix-citrus-spice",
-      "title": "Цитрус и специи",
-      "subtitle": "Апельсин · Лайм · Корица",
+      "id": "mix-black-cola-ice",
+      "title": "Black Cola Ice",
+      "subtitle": "Black Burn Black Cola · Lemon-Lime · Supernova",
       "image": "/media/mix-tropic.png",
-      "description": "Контрастный микс для тех, кто любит сочность с легкой пряной глубиной.",
-      "details": "Лучше всего работает в плотной чаше с умеренным прогревом. Лайм отвечает за яркость, корица — за теплое послевкусие.",
-      "ingredients": ["Апельсин", "Лайм", "Корица"],
-      "notes": ["цитрус", "пряности"],
+      "description": "Газированная кола, лимонная кислота и холодный хвост для плотной вечерней чаши.",
+      "details": "Рецепт: Black Cola 50%, Lemon-Lime 25%, Supernova 25%. Если хочется мягче, уменьши Supernova до 15%.",
+      "ingredients": ["Black Burn Black Cola", "MustHave Lemon-Lime", "Darkside Supernova"],
+      "notes": ["пряности", "цитрус", "холодок"],
       "isPopular": true
     },
     {
-      "id": "mix-dessert-cloud",
-      "title": "Десертное облако",
-      "subtitle": "Ваниль · Кокос · Сливки",
+      "id": "mix-peach-yogurt-berry",
+      "title": "Peach Berry Cream",
+      "subtitle": "Black Burn Peach Killer · Pinkman · Bananarama",
       "image": "/media/mix-berry.png",
-      "description": "Мягкий десертный профиль с кремовой базой и сладким ароматом.",
-      "details": "Нравится тем, кто ищет спокойные и плотные десертные чаши. Хорошо сочетается с легким холодком.",
-      "ingredients": ["Ваниль", "Кокос", "Сливки"],
+      "description": "Кремовый персик с ягодной кислотой и банановой мягкостью.",
+      "details": "Рецепт: Peach Killer 45%, Pinkman 35%, Bananarama 20%. Хорошо работает как фруктово-десертная чаша без тяжелой сладости.",
+      "ingredients": ["Black Burn Peach Killer", "MustHave Pinkman", "MustHave Bananarama"],
+      "notes": ["десерт", "ягоды", "сладкий"],
+      "isPopular": true
+    },
+    {
+      "id": "mix-grapefruit-mint",
+      "title": "Grapefruit Mint",
+      "subtitle": "Black Burn Grapefruit · Frosty · Mint",
+      "image": "/media/mix-tropic.png",
+      "description": "Грейпфрутовая горчинка, легкий холодок и сухой свежий финиш.",
+      "details": "Рецепт: Grapefruit 60%, Frosty 25%, мята 15%. Микс хорошо освежает и не уходит в приторность.",
+      "ingredients": ["Black Burn Grapefruit", "MustHave Frosty", "Мята"],
+      "notes": ["цитрус", "холодок"],
+      "isPopular": true
+    },
+    {
+      "id": "mix-bananarama-cream",
+      "title": "Banana Cream",
+      "subtitle": "MustHave Bananarama · Peach Killer · Vanilla",
+      "image": "/media/mix-berry.png",
+      "description": "Мягкий бананово-сливочный десерт с персиковым телом.",
+      "details": "Рецепт: Bananarama 45%, Peach Killer 35%, ваниль 20%. Для плотной чаши лучше не перегревать.",
+      "ingredients": ["MustHave Bananarama", "Black Burn Peach Killer", "Ваниль"],
       "notes": ["десерт", "сладкий"],
+      "isPopular": false
+    },
+    {
+      "id": "mix-melon-frost",
+      "title": "Melon Frost",
+      "subtitle": "MustHave Melonade · Frosty · Lemon-Lime",
+      "image": "/media/mix-tropic.png",
+      "description": "Дынная сладость с цитрусовым верхом и аккуратной прохладой.",
+      "details": "Рецепт: Melonade 55%, Lemon-Lime 25%, Frosty 20%. Свежий, но не ледяной профиль для дневной чаши.",
+      "ingredients": ["MustHave Melonade", "MustHave Lemon-Lime", "MustHave Frosty"],
+      "notes": ["сладкий", "цитрус", "холодок"],
+      "isPopular": false
+    },
+    {
+      "id": "mix-supernova-citrus",
+      "title": "Supernova Citrus",
+      "subtitle": "Darkside Supernova · Starline Citrus Boom · Grapefruit",
+      "image": "/media/mix-tropic.png",
+      "description": "Крепкий холодный цитрус для тех, кто любит яркий удар и сухой финиш.",
+      "details": "Рецепт: Citrus Boom 45%, Grapefruit 35%, Supernova 20%. Не завышай жар, чтобы сохранить цитрусовую чистоту.",
+      "ingredients": ["Starline Citrus Boom", "Black Burn Grapefruit", "Darkside Supernova"],
+      "notes": ["цитрус", "холодок"],
+      "isPopular": true
+    },
+    {
+      "id": "mix-tropic-cola",
+      "title": "Tropic Cola",
+      "subtitle": "Black Cola · Pineapple · Mango",
+      "image": "/media/mix-tropic.png",
+      "description": "Сладкая газировка с тропическим фруктовым верхом и плотной серединой.",
+      "details": "Рецепт: Black Cola 45%, ананас 30%, манго 25%. Хороший вариант, если хочется яркий, но понятный вкус.",
+      "ingredients": ["Black Burn Black Cola", "Ананас", "Манго"],
+      "notes": ["тропики", "пряности", "сладкий"],
+      "isPopular": true
+    },
+    {
+      "id": "mix-cookie-yogurt",
+      "title": "Cookie Yogurt",
+      "subtitle": "Peach Killer · Vanilla · Cream",
+      "image": "/media/mix-berry.png",
+      "description": "Спокойный кремовый десерт с персиковой сладостью и ванильным шлейфом.",
+      "details": "Рецепт: Peach Killer 50%, ваниль 25%, сливки 25%. Подходит для гостей, которые не любят холодные миксы.",
+      "ingredients": ["Black Burn Peach Killer", "Ваниль", "Сливки"],
+      "notes": ["десерт", "сладкий"],
+      "isPopular": false
+    },
+    {
+      "id": "mix-kiwi-lemonade",
+      "title": "Kiwi Lemonade",
+      "subtitle": "Kiwi Smoothie · Lemon-Lime · Frosty",
+      "image": "/media/mix-tropic.png",
+      "description": "Зеленый кислосладкий лимонад с легким холодком и фруктовой плотностью.",
+      "details": "Рецепт: Kiwi Smoothie 45%, Lemon-Lime 35%, Frosty 20%. Если нужен более мягкий профиль, добавь 10% Bananarama.",
+      "ingredients": ["MustHave Kiwi Smoothie", "MustHave Lemon-Lime", "MustHave Frosty"],
+      "notes": ["цитрус", "сладкий", "холодок"],
       "isPopular": false
     }
   ],
@@ -76,18 +142,106 @@
       "line": "Core",
       "strength": "Крепкая",
       "image": "/media/icon-tobaccos.png",
-      "description": "Холодная база для миксов, подходит для усиления яркости и свежести.",
+      "description": "Легендарный холодный вкус для усиления свежести и ледяного финиша в миксах.",
       "isNew": true
     },
     {
       "id": "prod-blackburn-peach",
-      "title": "Black Burn Peach Yogurt",
+      "title": "Black Burn Peach Killer",
       "brand": "Black Burn",
       "type": "tobacco",
       "line": "Original",
       "strength": "Средне-крепкая",
       "image": "/media/icon-tobaccos.png",
-      "description": "Персиково-йогуртовый профиль с мягкой сладостью и кремовым телом.",
+      "description": "Сладкий и нежный персиковый вкус с ярким фруктовым послевкусием.",
+      "isNew": false
+    },
+    {
+      "id": "prod-blackburn-cola",
+      "title": "Black Burn Black Cola",
+      "brand": "Black Burn",
+      "type": "tobacco",
+      "line": "Original",
+      "strength": "Средне-крепкая",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Темная сладкая кола с пряной газированной нотой для напиточных миксов.",
+      "isNew": true
+    },
+    {
+      "id": "prod-blackburn-grapefruit",
+      "title": "Black Burn Grapefruit",
+      "brand": "Black Burn",
+      "type": "tobacco",
+      "line": "Original",
+      "strength": "Средне-крепкая",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Сочный грейпфрут с легкой горчинкой, хорошо балансирует сладкие фрукты.",
+      "isNew": false
+    },
+    {
+      "id": "prod-musthave-pinkman",
+      "title": "MustHave Pinkman",
+      "brand": "MustHave",
+      "type": "tobacco",
+      "line": "Original",
+      "strength": "Средняя",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Узнаваемый кисло-сладкий ягодно-цитрусовый вкус для ярких миксов.",
+      "isNew": true
+    },
+    {
+      "id": "prod-musthave-frosty",
+      "title": "MustHave Frosty",
+      "brand": "MustHave",
+      "type": "tobacco",
+      "line": "Original",
+      "strength": "Средняя",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Холодный вкус для прохладного финиша без лишней сладости.",
+      "isNew": false
+    },
+    {
+      "id": "prod-musthave-lemon-lime",
+      "title": "MustHave Lemon-Lime",
+      "brand": "MustHave",
+      "type": "tobacco",
+      "line": "Original",
+      "strength": "Средняя",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Лимон и лайм: яркая кислота, чистый цитрус и хорошая связка с ягодами.",
+      "isNew": false
+    },
+    {
+      "id": "prod-musthave-bananarama",
+      "title": "MustHave Bananarama",
+      "brand": "MustHave",
+      "type": "tobacco",
+      "line": "Original",
+      "strength": "Средняя",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Плотный банановый вкус для десертных и кремовых миксов.",
+      "isNew": false
+    },
+    {
+      "id": "prod-musthave-melonade",
+      "title": "MustHave Melonade",
+      "brand": "MustHave",
+      "type": "tobacco",
+      "line": "Original",
+      "strength": "Средняя",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Сладкая дынная лимонадность, хорошо дружит с холодком и цитрусом.",
+      "isNew": true
+    },
+    {
+      "id": "prod-musthave-kiwi",
+      "title": "MustHave Kiwi Smoothie",
+      "brand": "MustHave",
+      "type": "tobacco",
+      "line": "Original",
+      "strength": "Средняя",
+      "image": "/media/icon-tobaccos.png",
+      "description": "Зеленый фруктовый профиль с кислинкой, подходит для лимонадных миксов.",
       "isNew": false
     },
     {
@@ -197,6 +351,14 @@
       "highlight": "Фрукты и десерты"
     },
     {
+      "id": "brand-musthave",
+      "title": "MustHave",
+      "country": "Россия",
+      "image": "/media/icon-brands.png",
+      "description": "Яркие узнаваемые вкусы вроде Pinkman, Frosty и Lemon-Lime для быстрых миксов.",
+      "highlight": "Ягодный цитрус"
+    },
+    {
       "id": "brand-satyr",
       "title": "Satyr",
       "country": "Россия",
@@ -239,14 +401,16 @@
       "title": "Летние фрукты",
       "image": "/media/mix-tropic.png",
       "description": "Подборка для ярких фруктовых чаш с легкой сладостью и свежим финишем.",
-      "mixIds": ["mix-tropic-breeze", "mix-citrus-spice"]
+      "mixIds": ["mix-pinkman-frost", "mix-melon-frost", "mix-kiwi-lemonade"]
     },
     {
       "id": "collection-2",
       "title": "Вечерний chill",
       "image": "/media/mix-berry.png",
       "description": "Спокойные ягодные и десертные сочетания для размеренных сессий.",
-      "mixIds": ["mix-berry-chill", "mix-dessert-cloud"]
+      "mixIds": ["mix-peach-yogurt-berry", "mix-bananarama-cream", "mix-cookie-yogurt"]
     }
-  ]
+  ],
+  "users": [],
+  "ratings": []
 }

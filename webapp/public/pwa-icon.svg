@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Кальянный мастер">
+  <defs>
+    <radialGradient id="glow" cx="38%" cy="24%" r="72%">
+      <stop offset="0" stop-color="#fffaf0"/>
+      <stop offset="0.48" stop-color="#ead7bf"/>
+      <stop offset="1" stop-color="#b9c7d5"/>
+    </radialGradient>
+    <linearGradient id="ink" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#2b241d"/>
+      <stop offset="1" stop-color="#15120f"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#glow)"/>
+  <circle cx="384" cy="112" r="118" fill="#fff6e6" opacity=".34"/>
+  <circle cx="108" cy="408" r="146" fill="#9fb7c8" opacity=".28"/>
+  <path fill="url(#ink)" d="M353 142c30 0 55 24 55 54 0 24-16 44-38 51v51c0 48-39 87-87 87h-54c-48 0-87-39-87-87v-51c-22-7-38-27-38-51 0-30 25-54 55-54h194Zm-188 86h182c17 0 31-14 31-32s-14-32-31-32H165c-17 0-31 14-31 32s14 32 31 32Zm-1 42v28c0 36 29 65 65 65h54c36 0 65-29 65-65v-28H164Z"/>
+  <path fill="#f0c866" d="M190 294h132v28H190z"/>
+  <text x="256" y="448" text-anchor="middle" font-family="Montserrat, Segoe UI, Arial, sans-serif" font-size="48" font-weight="500" fill="#15120f">КМ</text>
+</svg>

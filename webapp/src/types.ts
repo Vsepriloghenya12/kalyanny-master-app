@@ -17,6 +17,9 @@ export type Mix = {
   ingredients: string[];
   notes: string[];
   isPopular: boolean;
+  authorId?: string;
+  authorNickname?: string;
+  createdAt?: string;
 };
 
 export type ProductType = 'tobacco' | 'hookah' | 'accessory';
@@ -60,6 +63,30 @@ export type Collection = {
   mixIds: string[];
 };
 
+export type PublicUser = {
+  id: string;
+  nickname: string;
+};
+
+export type RatingTargetType = 'mix' | 'taste';
+
+export type UserRating = {
+  id: string;
+  userId: string;
+  targetType: RatingTargetType;
+  targetId: string;
+  value: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type RatingSummary = {
+  targetType: RatingTargetType;
+  targetId: string;
+  average: number;
+  count: number;
+};
+
 export type AppContent = {
   app: {
     title: string;
@@ -71,6 +98,7 @@ export type AppContent = {
   brands: Brand[];
   news: NewsItem[];
   collections: Collection[];
+  ratingSummaries?: RatingSummary[];
 };
 
 export type MainTab = 'home' | 'favorites' | 'catalog' | 'picks' | 'mixes' | 'mixer';

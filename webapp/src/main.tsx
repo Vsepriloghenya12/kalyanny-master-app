@@ -13,3 +13,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     </BrowserRouter>
   </React.StrictMode>
 );
+
+const isLocalDevHost = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+if (!isLocalDevHost && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {
+      // The app remains usable if a browser blocks service worker registration.
+    });
+  });
+}

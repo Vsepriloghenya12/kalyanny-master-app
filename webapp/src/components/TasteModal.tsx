@@ -1,8 +1,10 @@
 import { getMixDirection, getMixStrength } from '../mixMeta';
-import type { Mix } from '../types';
+import type { Mix, PublicUser, RatingSummary, RatingTargetType, UserRating } from '../types';
 import { ListRow } from './ListRow';
+import { RatingControl } from './RatingControl';
 
 export type TasteProfile = {
+  note: string;
   label: string;
   image: string;
   description: string;
@@ -12,8 +14,13 @@ export type TasteProfile = {
 
 type TasteModalProps = {
   taste: TasteProfile | null;
+  user: PublicUser | null;
+  ratingSummary?: RatingSummary;
+  userRating?: UserRating;
   onClose: () => void;
   onOpenMix: (mix: Mix) => void;
+  onLoginRequest: () => void;
+  onRate: (targetType: RatingTargetType, targetId: string, value: number) => Promise<void>;
 };
 
 function formatMixCount(count: number) {
@@ -25,7 +32,7 @@ function formatMixCount(count: number) {
   return `${count} миксов`;
 }
 
-export function TasteModal({ taste, onClose, onOpenMix }: TasteModalProps) {
+export function TasteModal({ taste, user, ratingSummary, userRating, onClose, onOpenMix, onLoginRequest, onRate }: TasteModalProps) {
   if (!taste) return null;
 
   return (
@@ -73,6 +80,16 @@ export function TasteModal({ taste, onClose, onOpenMix }: TasteModalProps) {
               ))}
             </div>
           </section>
+          <RatingControl
+            title="Оценить вкус"
+            targetType="taste"
+            targetId={taste.note}
+            summary={ratingSummary}
+            userRating={userRating}
+            user={user}
+            onLoginRequest={onLoginRequest}
+            onRate={onRate}
+          />
         </div>
       </div>
     </div>
