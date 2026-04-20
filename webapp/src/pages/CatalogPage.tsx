@@ -23,14 +23,32 @@ type CatalogPageProps = {
 const ALL_FILTER_VALUE = 'all';
 
 const TASTE_DIRECTION_KEYWORDS: Array<{ label: string; keywords: string[] }> = [
-  { label: 'Цитрус', keywords: ['citrus', 'цитрус', 'апельсин', 'лимон', 'лайм'] },
-  { label: 'Десертный', keywords: ['йогурт', 'слив', 'крем', 'десерт', 'ваниль'] },
-  { label: 'Фруктовый', keywords: ['peach', 'персик', 'фрукт', 'манго', 'ананас'] },
-  { label: 'Свежий', keywords: ['supernova', 'холод', 'свеж', 'мята', 'ice'] },
-  { label: 'Табачный', keywords: ['oak', 'cured', 'древ', 'сигар', 'табач'] }
+  { label: 'Ягодный', keywords: ['ягод', 'клубник', 'малин', 'черник', 'смородин', 'ежевик', 'клюкв', 'вишн'] },
+  { label: 'Цитрус', keywords: ['citrus', 'цитрус', 'апельсин', 'лимон', 'лайм', 'грейпфрут', 'мандарин'] },
+  { label: 'Десертный', keywords: ['йогурт', 'слив', 'крем', 'десерт', 'ваниль', 'вафл', 'печен', 'шоколад', 'карамел'] },
+  { label: 'Фруктовый', keywords: ['peach', 'персик', 'фрукт', 'манго', 'ананас', 'яблок', 'груш', 'банан', 'арбуз', 'дын'] },
+  { label: 'Свежий', keywords: ['supernova', 'холод', 'свеж', 'мята', 'ice', 'лед'] },
+  { label: 'Напитки', keywords: ['напит', 'кола', 'лимонад', 'содовая', 'энергетик', 'чай', 'кофе'] },
+  { label: 'Тропики', keywords: ['тропик', 'маракуй', 'кокос', 'личи', 'гуава'] },
+  { label: 'Травяной', keywords: ['трав', 'базилик', 'розмарин', 'тимьян'] },
+  { label: 'Цветочный', keywords: ['цветоч', 'лаванд', 'сирень', 'роза'] },
+  { label: 'Ореховый', keywords: ['орех', 'фисташ', 'миндаль', 'арахис'] },
+  { label: 'Пряный', keywords: ['прян', 'корица', 'специи', 'имбир'] },
+  { label: 'Табачный', keywords: ['oak', 'cured', 'древ', 'сигар', 'табач', 'вирджиния', 'берли'] }
 ];
 
+function normalizeTasteDirection(value: string) {
+  const normalizedValue = value.toLowerCase();
+  return TASTE_DIRECTION_KEYWORDS.find((direction) => direction.keywords.some((keyword) => normalizedValue.includes(keyword)))?.label;
+}
+
 function getTobaccoTasteDirection(product: Product) {
+  const explicitDirection = product.description.match(/Направление:\s*([^.;]+)/i)?.[1];
+  if (explicitDirection) {
+    const direction = normalizeTasteDirection(explicitDirection);
+    if (direction) return direction;
+  }
+
   const searchableText = `${product.title} ${product.line} ${product.description}`.toLowerCase();
   return TASTE_DIRECTION_KEYWORDS.find((direction) => direction.keywords.some((keyword) => searchableText.includes(keyword)))?.label ?? 'Авторский';
 }
